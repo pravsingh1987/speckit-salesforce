@@ -1,4 +1,4 @@
-# SpecKit - Salesforce Development Accelerator
+# SpecKit Salesforce - Development Accelerator
 
 A comprehensive specification and progress tracking kit for Salesforce development projects. Built for Cursor IDE with AI-powered workflow automation.
 
@@ -10,16 +10,20 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 - **Jira Integration** - Sync story status automatically
 - **Token Tracking** - Monitor AI consumption per contributor
 - **Multi-Epic Support** - Manage complex projects with multiple workstreams
+- **Wireframe Generation** - SLDS-aligned UI mockups for customer sign-off
+- **Constitution Governance** - Enforce architectural principles and coding standards
 
 ## Quick Install
 
 ```bash
 # Clone the package
-git clone https://git.soma.salesforce.com/praveensingh/speckit-generic.git
+git clone https://github.com/pravsingh1987/speckit-salesforce.git
 
 # Install to your project
-bash speckit-generic/install.sh /path/to/your-project
+bash speckit-salesforce/install.sh /path/to/your-project
 ```
+
+See `INSTALLATION_GUIDE.md` for complete setup instructions.
 
 ## What's Included
 
@@ -31,14 +35,36 @@ bash speckit-generic/install.sh /path/to/your-project
 | `/speckit-plan` | Create implementation plan with research |
 | `/speckit-tasks` | Break down into actionable tasks |
 | `/speckit-analyze` | Validate spec completeness |
-| `/speckit-dashboard` | Manage progress dashboard |
+| `/speckit-wireframe` | Create SLDS-aligned UI wireframes |
 | `/speckit-implement` | Execute task implementation |
+| `/speckit-dashboard` | Manage progress dashboard |
+| `/speckit-constitution` | Validate against governance principles |
 | `/speckit-checklist` | Generate requirement checklists |
-| `/speckit-wireframe` | Create UI wireframes |
-| `/speckit-constitution` | Define project guardrails |
 | `/speckit-clarify` | Refine ambiguous requirements |
 | `/speckit-taskstoissues` | Export tasks to Jira |
 | `/speckit-agent-context-update` | Update agent context |
+
+### Memory Files (Project Context)
+
+Files in `.specify/memory/` are **automatically consulted** by all commands:
+
+| File | Purpose |
+|------|---------|
+| `constitution.md` | Governance principles, coding standards |
+| `project-details.md` | Project info, stakeholders, timelines |
+| `taxonomy.md` | Naming conventions, glossary, acronyms |
+| `domain.md` | Industry knowledge, business processes |
+| `regulatory.md` | Compliance requirements, data classification |
+
+### Templates
+
+| Template | Output |
+|----------|--------|
+| `spec-template.md` | Feature specifications with user stories |
+| `plan-template.md` | Implementation plans with constitution check |
+| `tasks-template.md` | Task breakdown organized by user story |
+| `checklist-template.md` | Requirement checklists |
+| `progress-tracker-template.json` | Dashboard data structure |
 
 ### Progress Dashboard
 
@@ -47,16 +73,9 @@ bash speckit-generic/install.sh /path/to/your-project
 - Multi-contributor token consumption
 - Epic & story management
 - Jira status sync
+- GitHub Pages ready
 
-### Templates
-
-- Specification template
-- Plan template
-- Tasks template
-- Checklist template
-- Progress tracker JSON
-
-## Usage
+## Usage Workflow
 
 ### 1. Initialize a New Feature
 
@@ -65,7 +84,13 @@ bash speckit-generic/install.sh /path/to/your-project
 Objective: what you want to achieve
 Primary users: who will use it
 Core objects: Salesforce objects involved
-Capabilities: list of requirements
+
+[Optionally include:]
+- Meeting transcripts
+- Recording summaries
+- Wireframe descriptions
+- Requirements documents
+- Discussion notes
 ```
 
 ### 2. Generate Plan & Tasks
@@ -75,13 +100,25 @@ Capabilities: list of requirements
 /speckit-tasks   # Breaks down into implementable tasks
 ```
 
-### 3. Validate Before Implementation
+### 3. Create Wireframes (Optional)
+
+```
+/speckit-wireframe  # Generates SLDS-aligned visual mockups
+```
+
+### 4. Validate Before Implementation
 
 ```
 /speckit-analyze  # Returns PASS/FAIL with recommendations
 ```
 
-### 4. Track Progress
+### 5. Implement
+
+```
+/speckit-implement  # Execute tasks with guidance
+```
+
+### 6. Track Progress
 
 ```
 /speckit-dashboard        # Generate/update dashboard
@@ -95,70 +132,71 @@ After installation:
 ```
 your-project/
 ├── .cursor/
-│   └── skills/           # Agent skills
+│   └── skills/                    # Agent skills (12 commands)
 ├── .specify/
-│   ├── templates/        # Document templates
-│   ├── scripts/          # Setup scripts
-│   ├── memory/           # Constitution & context
-│   └── integrations/     # Cursor agent config
-├── docs/                  # GitHub Pages
+│   ├── templates/                 # Document templates
+│   ├── scripts/                   # Setup scripts
+│   ├── memory/                    # Project context
+│   │   ├── constitution.md        ← Governance principles
+│   │   ├── project-details.md     ← Project info
+│   │   ├── taxonomy.md            ← Naming conventions
+│   │   ├── domain.md              ← Industry knowledge
+│   │   └── regulatory.md          ← Compliance rules
+│   └── integrations/
+├── docs/                          # GitHub Pages
 │   ├── progress-dashboard.html
 │   └── progress-tracker.json
-└── specs/                 # Your specifications
+├── sample-constitution.md         # Customizable template
+└── specs/                         # Your specifications
     └── 001-feature-name/
         ├── spec.md
         ├── plan.md
         ├── tasks.md
+        ├── wireframes.md
         └── data-model.md
 ```
 
 ## Configuration
 
-### Project Settings
+### Required Settings
 
-Edit `docs/progress-tracker.json`:
+| Setting | Description | Example |
+|---------|-------------|---------|
+| `name` | Your project name | "Customer Portal" |
+| `salesforce_org` | SF org alias | "devhub" |
 
-```json
-{
-  "project": {
-    "name": "Your Project Name",
-    "jira_project": "YOUR-KEY",
-    "jira_url": "https://your-instance.atlassian.net/...",
-    "github_repo": "https://github.com/org/repo",
-    "salesforce_org": "Your Org Alias"
-  }
-}
+### Optional Settings (Recommended)
+
+| Setting | Description | Example |
+|---------|-------------|---------|
+| `github_repo` | Full GitHub URL | `https://github.com/myorg/myrepo` |
+| `jira_project` | Jira project key | `PORTAL-123` |
+| `jira_url` | Jira board URL | `https://mycompany.atlassian.net/...` |
+
+### GitHub Pages Setup
+
+1. Push your code to GitHub
+2. Go to: `Settings → Pages`
+3. Source: `main` branch, `/docs` folder
+4. Your dashboard URL: `https://<org>.github.io/<repo>/progress-dashboard.html`
+
+### Jira Integration
+
+For automatic story sync, see `docs/jira-integration.md`:
+- **Manual sync**: Tell agent "Sync from Jira"
+- **Automated**: Set up Jira webhook (requires admin)
+
+## Salesforce PS Audit Tool Integration
+
+The constitution references the Salesforce PS Audit Tool for code validation:
+
+```bash
+# Run audit
+cd ~/Documents/Sf\ PS\ Audit\ Tool/salesforce-audit-tool-v1.2.17
+python3 salesforce_audit.py --sfdx my-org
 ```
 
-### Adding Team Members
-
-```json
-{
-  "contributors": [
-    {
-      "id": "jane",
-      "name": "Jane Smith",
-      "role": "Developer",
-      "total_tokens": 0,
-      "sessions_count": 0
-    }
-  ]
-}
-```
-
-## Jira Integration
-
-### Manual Sync (No Admin)
-Tell the agent: "Sync from Jira"
-
-### Automated Webhook (Requires Admin)
-See `docs/jira-integration.md` for setup instructions.
-
-## GitHub Pages
-
-1. Push to GitHub
-2. Settings → Pages → Source: `main`, Folder: `/docs`
-3. Access dashboard at your Pages URL
+See `INSTALLATION_GUIDE.md` for complete audit tool setup.
 
 ## Requirements
 
@@ -166,20 +204,14 @@ See `docs/jira-integration.md` for setup instructions.
 - Git repository
 - Jira project (optional)
 - GitHub Pages (optional)
+- Salesforce CLI (for deployment)
 
-## Customization
+## Documentation
 
-### Add Custom Templates
-
-Create templates in `.specify/templates/`:
-- Use `{{PLACEHOLDER}}` for variables
-- Reference in skills as needed
-
-### Modify Skills
-
-Edit skills in `.cursor/skills/speckit-*/SKILL.md`:
-- Customize prompts and workflows
-- Add project-specific guidance
+- **Installation Guide**: `INSTALLATION_GUIDE.md`
+- **Jira Integration**: `docs/jira-integration.md`
+- **Dashboard Guide**: `docs/README.md`
+- **Skill Details**: `.cursor/skills/speckit-*/SKILL.md`
 
 ## Support
 
@@ -187,5 +219,5 @@ For issues or enhancements, contact your SpecKit administrator.
 
 ## Version
 
-- **SpecKit Generic**: 1.0.0
+- **SpecKit Salesforce**: 1.0.0
 - **Based on**: SpecKit 0.10.1

@@ -1,4 +1,4 @@
-# SpecKit Generic Edition - Installation & User Guide
+# SpecKit Salesforce Edition - Installation & User Guide
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@
 
 ## Overview
 
-SpecKit Generic Edition is a universal development accelerator for any Salesforce project. It provides:
+SpecKit Salesforce Edition is a universal development accelerator for any Salesforce project. It provides:
 
 - **12 Agent Skills** for spec-driven development
 - **Clean Templates** (no pre-built samples - start fresh)
@@ -49,7 +49,7 @@ SpecKit Generic Edition is a universal development accelerator for any Salesforc
 ### Step 1: Clone the Package
 
 ```bash
-git clone https://github.com/pravsingh1987/speckit-generic.git
+git clone https://github.com/pravsingh1987/speckit-salesforce.git
 ```
 
 ### Step 2: Create Your Project Directory
@@ -62,12 +62,12 @@ cd my-salesforce-project
 ### Step 3: Run the Installer
 
 ```bash
-bash /path/to/speckit-generic/install.sh .
+bash /path/to/speckit-salesforce/install.sh .
 ```
 
 **Example:**
 ```bash
-bash ~/Downloads/speckit-generic/install.sh .
+bash ~/Downloads/speckit-salesforce/install.sh .
 ```
 
 ### Step 4: Answer the Configuration Prompts
@@ -804,40 +804,251 @@ After installation, your project will have:
 ```
 your-project/
 ├── .cursor/
-│   └── skills/
+│   └── skills/                          ← Agent commands
 │       ├── speckit-specify/SKILL.md
 │       ├── speckit-plan/SKILL.md
 │       ├── speckit-tasks/SKILL.md
-│       ├── speckit-wireframe/SKILL.md    ← Wireframe generation
+│       ├── speckit-wireframe/SKILL.md
 │       ├── speckit-analyze/SKILL.md
 │       ├── speckit-implement/SKILL.md
 │       ├── speckit-dashboard/SKILL.md
 │       ├── speckit-checklist/SKILL.md
 │       ├── speckit-clarify/SKILL.md
-│       ├── speckit-constitution/SKILL.md ← Governance checker
+│       ├── speckit-constitution/SKILL.md
 │       ├── speckit-taskstoissues/SKILL.md
 │       └── speckit-agent-context-update/SKILL.md
 ├── .specify/
-│   ├── templates/
+│   ├── templates/                       ← Output templates
 │   │   ├── spec-template.md
 │   │   ├── plan-template.md
 │   │   ├── tasks-template.md
+│   │   ├── checklist-template.md
+│   │   ├── constitution-template.md
 │   │   └── progress-tracker-template.json
 │   ├── scripts/
 │   │   └── bash/
 │   │       └── setup-dashboard.sh
-│   ├── memory/
-│   │   └── constitution.md              ← Your project constitution
+│   ├── memory/                          ← Project context (ALWAYS consulted)
+│   │   ├── constitution.md              ← Governance principles
+│   │   ├── project-details.md           ← Project info, stakeholders
+│   │   ├── taxonomy.md                  ← Naming conventions, glossary
+│   │   ├── domain.md                    ← Industry knowledge, processes
+│   │   └── regulatory.md                ← Compliance requirements
 │   └── integrations/
 ├── docs/
 │   ├── progress-dashboard.html
 │   ├── progress-tracker.json
 │   ├── jira-integration.md
 │   └── README.md
-├── sample-constitution.md               ← Template to customize
+├── sample-constitution.md
 └── specs/
     └── (your specifications will be here)
 ```
+
+---
+
+## Memory Files (Project Context)
+
+The `.specify/memory/` folder contains files that are **automatically consulted** by all SpecKit commands. These files provide persistent project context.
+
+### Available Memory Files
+
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| `constitution.md` | Governance principles, coding standards | Every project (required) |
+| `project-details.md` | Project info, stakeholders, timelines | Every project (recommended) |
+| `taxonomy.md` | Naming conventions, glossary, acronyms | Multi-team projects |
+| `domain.md` | Industry knowledge, business processes | Domain-specific projects |
+| `regulatory.md` | Compliance requirements, data classification | Regulated industries |
+
+### constitution.md
+
+**Purpose**: Defines architectural principles and coding standards that MUST be followed.
+
+**Key Sections**:
+- Core Principles (Platform-First, Security, Governor Limits)
+- Code Quality Standards (Apex, LWC, Testing)
+- Permission Set Governance
+- Audit Tool Configuration
+
+**Example Usage**:
+```markdown
+### II. Security & Access Control (NON-NEGOTIABLE)
+All database operations MUST run in user mode.
+Classes MUST use `with sharing`.
+```
+
+### project-details.md
+
+**Purpose**: Central reference for project context.
+
+**Key Sections**:
+
+| Section | What to Include |
+|---------|----------------|
+| **Project Information** | Name, code, org alias, API version |
+| **Stakeholders** | Names, roles, responsibilities |
+| **Timeline** | Milestones, target dates |
+| **Environments** | Dev, QA, UAT, Prod org details |
+| **Scope** | In scope, out of scope, future phases |
+| **Success Metrics** | KPIs, targets, measurement methods |
+
+### taxonomy.md
+
+**Purpose**: Ensures consistent naming and terminology.
+
+**Key Sections**:
+
+| Section | Contents |
+|---------|----------|
+| **Object Naming** | `[Namespace]_[Entity]__c` patterns |
+| **Field Naming** | Standard extensions, lookups, formulas |
+| **Apex Naming** | Triggers, handlers, services, tests |
+| **LWC Naming** | Components, events, methods |
+| **Permission Sets** | `[App]_[Feature]_[Level]` format |
+| **Business Glossary** | Term → Definition → Salesforce mapping |
+| **Acronyms** | KAM, HCP, HCO, RSM, etc. |
+
+**Example**:
+```markdown
+### Apex Naming
+| Type | Pattern | Example |
+|------|---------|---------|
+| Trigger | `[Object]Trigger` | `AccountTrigger` |
+| Handler | `[Object]TriggerHandler` | `AccountTriggerHandler` |
+| Service | `[Domain]Service` | `OpportunityService` |
+```
+
+### domain.md
+
+**Purpose**: Captures industry-specific knowledge.
+
+**Key Sections**:
+
+| Section | Contents |
+|---------|----------|
+| **Industry Overview** | Sector, business model |
+| **Business Processes** | Step-by-step workflows |
+| **Business Rules** | Validation rules, approvals |
+| **Domain Entities** | Business → Salesforce mapping |
+| **Industry Metrics** | KPIs, calculations, targets |
+| **Competitive Landscape** | Competitors, differentiation |
+| **Seasonal Factors** | Cyclical impacts on system |
+
+**Example**:
+```markdown
+## Business Rules
+| Rule ID | Description | Enforcement |
+|---------|-------------|-------------|
+| BR-001 | Orders > $50K need director approval | Approval Process |
+| BR-002 | Discounts capped at 20% | Validation Rule |
+```
+
+### regulatory.md
+
+**Purpose**: Documents compliance requirements.
+
+**Key Sections**:
+
+| Section | Contents |
+|---------|----------|
+| **Applicable Regulations** | GDPR, HIPAA, SOX, PCI-DSS |
+| **Data Classification** | Public, Internal, Confidential, Highly Confidential |
+| **Retention Policies** | How long data must be kept |
+| **Consent Management** | Types, collection points, tracking |
+| **Audit Requirements** | What must be logged |
+| **Security Requirements** | Access control, encryption |
+| **Compliance Checklist** | Pre-deployment verification |
+
+**Example**:
+```markdown
+## Data Classification
+| Level | Examples | Handling |
+|-------|----------|----------|
+| **Confidential** | Customer PII | Role-based access, encryption |
+| **Highly Confidential** | SSN, PHI | MFA, audit logging, Shield |
+```
+
+### Setting Up Memory Files
+
+1. **Copy templates to memory folder**:
+   ```bash
+   # Constitution is already there, copy others
+   cp sample-project-details.md .specify/memory/project-details.md
+   ```
+
+2. **Customize each file** with your project-specific information
+
+3. **Verify with SpecKit**:
+   ```
+   /speckit-constitution
+   ```
+   This validates your constitution and shows what memory files are active.
+
+---
+
+## Templates Reference
+
+The `.specify/templates/` folder contains templates that define output formats.
+
+### spec-template.md
+
+**Purpose**: Structure for feature specifications
+
+**Key Sections**:
+- User Scenarios & Testing (prioritized user stories)
+- Requirements (functional requirements with FR-XXX IDs)
+- Key Entities
+- Panel/Screen Content (fields visible)
+- Navigation & Interactions
+- Persona Capabilities (CRUD matrix)
+- Success Criteria
+- Wireframes (populated by `/speckit-wireframe`)
+- Assumptions
+
+**Format Features**:
+- User stories with priorities (P1, P2, P3)
+- Acceptance scenarios in Given/When/Then format
+- Pharma domain field grounding (customizable)
+
+### plan-template.md
+
+**Purpose**: Implementation plan structure
+
+**Key Sections**:
+- Summary
+- Technical Context (language, dependencies, platform)
+- Constitution Check gate
+- Project Structure
+- Complexity Tracking (for justified violations)
+
+**Format Features**:
+- Constitution check must pass before proceeding
+- Multiple project structure options
+- Clear technical context requirements
+
+### tasks-template.md
+
+**Purpose**: Task breakdown structure
+
+**Key Sections**:
+- Phase 1: Setup (project initialization)
+- Phase 2: Foundational (blocking prerequisites)
+- Phase 3+: User Stories (one phase per story)
+- Phase N: Polish (cross-cutting concerns)
+
+**Format Features**:
+- `[P]` marker for parallel tasks
+- `[US1]`, `[US2]` markers for story mapping
+- MVP-first implementation strategy
+- Checkpoint validation points
+
+### Customizing Templates
+
+1. **Edit template files** in `.specify/templates/`
+2. **Add industry-specific sections** (e.g., pharma fields, compliance checks)
+3. **Remove unused sections** for your project type
+4. **Templates are automatically used** by SpecKit commands
 
 ---
 
@@ -853,6 +1064,6 @@ your-project/
 
 | Component | Version |
 |-----------|---------|
-| SpecKit Generic | 1.0.0 |
+| SpecKit Salesforce | 1.0.0 |
 | Base SpecKit | 0.10.1 |
 | Last Updated | June 2026 |

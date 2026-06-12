@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Progress Dashboard - Progress Dashboard</title>
+    <title>Project Progress Dashboard</title>
     <style>
         :root {
             --bg-primary: #0d1117;
@@ -18,14 +18,12 @@
             --accent-yellow: #d29922;
             --accent-red: #f85149;
             --accent-purple: #a371f7;
-            --accent-orange: #db6d28;
-            --accent-pink: #db61a2;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.5;
@@ -34,52 +32,13 @@
         
         .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
         
-        header {
-            margin-bottom: 32px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
+        header { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color); }
         h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
         .subtitle { color: var(--text-secondary); font-size: 14px; }
         
         .links { margin-top: 12px; display: flex; gap: 16px; flex-wrap: wrap; }
-        .links a {
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-size: 14px;
-        }
+        .links a { color: var(--accent-blue); text-decoration: none; font-size: 14px; }
         .links a:hover { text-decoration: underline; }
-        
-        .tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 24px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0;
-        }
-        
-        .tab {
-            padding: 12px 20px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -1px;
-            transition: all 0.2s;
-        }
-        
-        .tab:hover { color: var(--text-primary); }
-        .tab.active {
-            color: var(--accent-blue);
-            border-bottom-color: var(--accent-blue);
-        }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
         
         .summary-grid {
             display: grid;
@@ -108,22 +67,9 @@
         .stat-value.green { color: var(--accent-green); }
         .stat-value.yellow { color: var(--accent-yellow); }
         .stat-value.purple { color: var(--accent-purple); }
-        .stat-value.orange { color: var(--accent-orange); }
-        .stat-value.red { color: var(--accent-red); }
-        
-        .stat-detail { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
         
         .section { margin-bottom: 32px; }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        
-        h2 { font-size: 18px; font-weight: 600; }
-        h3 { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; }
+        h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
         
         .progress-bar-container {
             background: var(--bg-tertiary);
@@ -133,1104 +79,163 @@
             margin-bottom: 8px;
         }
         
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
-            transition: width 0.3s ease;
-        }
-        
-        .progress-segments {
-            display: flex;
-            height: 100%;
-        }
-        
-        .progress-segment {
-            height: 100%;
-            transition: width 0.3s ease;
-        }
-        
+        .progress-segments { display: flex; height: 100%; }
+        .progress-segment { height: 100%; }
         .progress-segment.built { background: var(--accent-green); }
         .progress-segment.review { background: var(--accent-yellow); }
         .progress-segment.progress { background: var(--accent-blue); }
         
-        .progress-legend {
-            display: flex;
-            gap: 16px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 2px;
-        }
-        
-        /* Built Stories Section */
-        .built-stories-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .built-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .built-count {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-        }
-        
-        .built-count .number {
-            font-size: 32px;
-            font-weight: 600;
-            color: var(--accent-green);
-        }
-        
-        .built-count .total {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-        
-        .built-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .built-item {
-            padding: 12px 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .built-item:last-child { border-bottom: none; }
-        
-        .built-icon {
-            width: 24px;
-            height: 24px;
-            background: rgba(63, 185, 80, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-green);
-            font-size: 12px;
-        }
-        
-        .built-info { flex: 1; }
-        .built-info .key { font-family: monospace; font-size: 12px; color: var(--accent-blue); }
-        .built-info .summary { font-size: 14px; margin-top: 2px; }
-        
-        .built-meta {
-            text-align: right;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        
         .empty-state {
-            padding: 40px 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 60px 20px;
             text-align: center;
             color: var(--text-muted);
         }
         
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
-            opacity: 0.5;
-        }
-        
-        /* Contributor Section */
-        .contributor-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        
-        .contributor-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-        }
-        
-        .contributor-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .contributor-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--text-secondary); }
+        .empty-state p { font-size: 14px; margin-bottom: 16px; }
+        .empty-state code {
             background: var(--bg-tertiary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: var(--accent-blue);
-        }
-        
-        .contributor-name { font-weight: 500; }
-        .contributor-role { font-size: 12px; color: var(--text-secondary); }
-        
-        .contributor-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border-color);
-        }
-        
-        .contributor-stat {
-            text-align: center;
-        }
-        
-        .contributor-stat-value {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--accent-purple);
-        }
-        
-        .contributor-stat-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        
-        /* Epic Cards */
-        .epic-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            margin-bottom: 16px;
-            overflow: hidden;
-        }
-        
-        .epic-header {
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .epic-title { display: flex; align-items: center; gap: 12px; }
-        .epic-name { font-weight: 600; font-size: 16px; }
-        
-        .epic-key {
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            padding: 2px 8px;
+            padding: 8px 16px;
             border-radius: 4px;
-            font-size: 12px;
-            font-family: monospace;
-        }
-        
-        .priority-badge {
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-        
-        .priority-critical {
-            background: rgba(248, 81, 73, 0.2);
-            color: var(--accent-red);
-        }
-        
-        .priority-high {
-            background: rgba(210, 153, 34, 0.2);
+            font-size: 13px;
             color: var(--accent-yellow);
         }
-        
-        .epic-progress {
-            padding: 12px 20px;
-            background: var(--bg-tertiary);
-        }
-        
-        .epic-progress-bar {
-            height: 6px;
-            background: var(--bg-primary);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-        
-        .epic-stats {
-            display: flex;
-            gap: 24px;
-            padding: 12px 20px;
-            background: var(--bg-tertiary);
-        }
-        
-        .epic-stat { text-align: center; }
-        .epic-stat-value { font-size: 20px; font-weight: 600; }
-        .epic-stat-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; }
-        
-        .stories-list { max-height: 300px; overflow-y: auto; }
-        
-        .story-row {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            border-bottom: 1px solid var(--border-color);
-            gap: 12px;
-        }
-        
-        .story-row:last-child { border-bottom: none; }
-        
-        .story-status {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        
-        .status-pending { background: var(--text-muted); }
-        .status-in-progress { background: var(--accent-blue); }
-        .status-in-review { background: var(--accent-yellow); }
-        .status-built { background: var(--accent-green); }
-        
-        .story-key {
-            font-family: monospace;
-            font-size: 12px;
-            color: var(--accent-blue);
-            min-width: 120px;
-        }
-        
-        .story-summary { flex: 1; font-size: 14px; }
-        
-        .story-badge {
-            font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 4px;
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-        }
-        
-        .story-built-by {
-            font-size: 11px;
-            color: var(--accent-green);
-        }
-        
-        /* Charts */
-        .chart-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
-        }
-        
-        .chart-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-        }
-        
-        .chart-title {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 16px;
-        }
-        
-        .bar-chart { display: flex; flex-direction: column; gap: 12px; }
-        
-        .bar-item { display: flex; align-items: center; gap: 12px; }
-        .bar-label { min-width: 140px; font-size: 13px; color: var(--text-secondary); }
-        
-        .bar-track {
-            flex: 1;
-            height: 24px;
-            background: var(--bg-tertiary);
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .bar-fill {
-            height: 100%;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            padding-left: 8px;
-            font-size: 12px;
-            font-weight: 500;
-            color: white;
-        }
-        
-        .bar-fill.epic1 { background: var(--accent-blue); }
-        .bar-fill.epic2 { background: var(--accent-green); }
-        .bar-fill.epic3 { background: var(--accent-purple); }
-        
-        /* Token Sessions Table */
-        .token-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        
-        .token-table th {
-            text-align: left;
-            padding: 8px 12px;
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 11px;
-            text-transform: uppercase;
-        }
-        
-        .token-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border-color);
-        }
-        
-        .token-table tr:last-child td { border-bottom: none; }
-        
-        .token-value { font-weight: 600; color: var(--accent-purple); }
-        
-        /* Deployment Status */
-        .deployment-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-        }
-        
-        .deployment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        
-        .deployment-status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-        }
-        
-        .deployment-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        
-        .deployment-dot.none { background: var(--text-muted); }
-        .deployment-dot.active { background: var(--accent-green); animation: pulse 2s infinite; }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .component-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-        }
-        
-        .component-stat {
-            background: var(--bg-tertiary);
-            border-radius: 6px;
-            padding: 12px;
-            text-align: center;
-        }
-        
-        .component-count { font-size: 24px; font-weight: 600; color: var(--accent-blue); }
-        .component-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; }
         
         .footer {
             margin-top: 32px;
             padding-top: 16px;
             border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
             font-size: 12px;
             color: var(--text-muted);
-        }
-        
-        @media (max-width: 768px) {
-            .chart-grid { grid-template-columns: 1fr; }
-            .epic-header { flex-direction: column; gap: 8px; }
-            .epic-stats { flex-wrap: wrap; }
-            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Project Progress Dashboard</h1>
-            <div class="subtitle">Salesforce Development Project</div>
+            <h1 id="project-name">Project Progress Dashboard</h1>
+            <div class="subtitle" id="project-subtitle">Salesforce Development Project</div>
             <div class="links">
-                <a href="https://salesforce.atlassian.net/jira/software/c/projects/PR1070767/boards/15888" target="_blank">Jira Board</a>
-                <a href="https://git.soma.salesforce.com/praveensingh/Lupin-Pharma" target="_blank">GitHub Repository</a>
-                <span style="color: var(--text-muted);">|</span>
-                <span style="color: var(--text-secondary); font-size: 12px;">Org: Lupin Hospital Demo</span>
+                <a href="#" id="jira-link" style="display:none;">Jira Board</a>
+                <a href="#" id="github-link" style="display:none;">GitHub Repository</a>
             </div>
         </header>
 
-        <div class="tabs">
-            <button class="tab active" data-tab="overview">Overview</button>
-            <button class="tab" data-tab="built">Built Stories</button>
-            <button class="tab" data-tab="contributors">Contributors</button>
-            <button class="tab" data-tab="epics">Epics & Stories</button>
-            <button class="tab" data-tab="tokens">Token Details</button>
+        <div class="summary-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Epics</div>
+                <div class="stat-value blue" id="total-epics">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Stories</div>
+                <div class="stat-value green" id="total-stories">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Stories Built</div>
+                <div class="stat-value green" id="stories-built">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">In Progress</div>
+                <div class="stat-value blue" id="stories-progress">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Completion</div>
+                <div class="stat-value yellow" id="completion">0%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Est. Tokens</div>
+                <div class="stat-value purple" id="total-tokens">0</div>
+            </div>
         </div>
 
-        <!-- Overview Tab -->
-        <div class="tab-content active" id="overview">
-            <div class="summary-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Total Epics</div>
-                    <div class="stat-value blue" id="total-epics">3</div>
-                    <div class="stat-detail">All defined in Jira</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Total Stories</div>
-                    <div class="stat-value green" id="total-stories">33</div>
-                    <div class="stat-detail">With detailed FRs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Stories Built</div>
-                    <div class="stat-value green" id="stories-built">0</div>
-                    <div class="stat-detail">Deployed to org</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">In Progress</div>
-                    <div class="stat-value blue" id="stories-progress">0</div>
-                    <div class="stat-detail">Being developed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">In Review</div>
-                    <div class="stat-value yellow" id="stories-review">0</div>
-                    <div class="stat-detail">Awaiting approval</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Est. Tokens</div>
-                    <div class="stat-value purple" id="total-tokens">485K</div>
-                    <div class="stat-detail">All contributors</div>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-header">
-                    <h2>Overall Progress</h2>
-                    <span id="progress-percent" style="color: var(--accent-green); font-weight: 600;">0%</span>
-                </div>
-                <div class="progress-bar-container">
-                    <div class="progress-segments">
-                        <div class="progress-segment built" id="progress-built" style="width: 0%;"></div>
-                        <div class="progress-segment review" id="progress-review" style="width: 0%;"></div>
-                        <div class="progress-segment progress" id="progress-inprogress" style="width: 0%;"></div>
-                    </div>
-                </div>
-                <div class="progress-legend">
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background: var(--accent-green);"></div>
-                        <span>Built (<span id="legend-built">0</span>)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background: var(--accent-yellow);"></div>
-                        <span>In Review (<span id="legend-review">0</span>)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background: var(--accent-blue);"></div>
-                        <span>In Progress (<span id="legend-progress">0</span>)</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-dot" style="background: var(--text-muted);"></div>
-                        <span>Pending (<span id="legend-pending">33</span>)</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="chart-grid">
-                <div class="chart-card">
-                    <div class="chart-title">Token Consumption by Epic</div>
-                    <div class="bar-chart" id="token-chart">
-                        <div class="bar-item">
-                            <span class="bar-label">Hospital 360</span>
-                            <div class="bar-track">
-                                <div class="bar-fill epic1" style="width: 26.8%;">130K</div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <span class="bar-label">Contact 360</span>
-                            <div class="bar-track">
-                                <div class="bar-fill epic2" style="width: 36.1%;">175K</div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <span class="bar-label">Opportunity Journey</span>
-                            <div class="bar-track">
-                                <div class="bar-fill epic3" style="width: 37.1%;">180K</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="chart-card">
-                    <div class="chart-title">Stories by Epic</div>
-                    <div class="bar-chart">
-                        <div class="bar-item">
-                            <span class="bar-label">Hospital 360</span>
-                            <div class="bar-track">
-                                <div class="bar-fill epic1" style="width: 39.4%;">13 stories</div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <span class="bar-label">Contact 360</span>
-                            <div class="bar-track">
-                                <div class="bar-fill epic2" style="width: 30.3%;">10 stories</div>
-                            </div>
-                        </div>
-                        <div class="bar-item">
-                            <span class="bar-label">Opportunity Journey</span>
-                            <div class="bar-track">
-                                <div class="bar-fill epic3" style="width: 30.3%;">10 stories</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section" style="margin-top: 32px;">
-                <h2 style="margin-bottom: 16px;">Deployment Status</h2>
-                <div class="deployment-card">
-                    <div class="deployment-header">
-                        <h3 style="margin: 0;">Salesforce Org: Lupin Hospital Demo</h3>
-                        <div class="deployment-status">
-                            <div class="deployment-dot none" id="deployment-dot"></div>
-                            <span id="deployment-status-text">No deployments yet</span>
-                        </div>
-                    </div>
-                    <div class="component-grid">
-                        <div class="component-stat">
-                            <div class="component-count" id="deployed-objects">0</div>
-                            <div class="component-label">Custom Objects</div>
-                        </div>
-                        <div class="component-stat">
-                            <div class="component-count" id="deployed-fields">0</div>
-                            <div class="component-label">Custom Fields</div>
-                        </div>
-                        <div class="component-stat">
-                            <div class="component-count" id="deployed-apex">0</div>
-                            <div class="component-label">Apex Classes</div>
-                        </div>
-                        <div class="component-stat">
-                            <div class="component-count" id="deployed-lwc">0</div>
-                            <div class="component-label">LWC Components</div>
-                        </div>
-                        <div class="component-stat">
-                            <div class="component-count" id="deployed-permsets">0</div>
-                            <div class="component-label">Permission Sets</div>
-                        </div>
-                        <div class="component-stat">
-                            <div class="component-count" id="deployed-pages">0</div>
-                            <div class="component-label">FlexiPages</div>
-                        </div>
-                    </div>
+        <div class="section">
+            <h2>Progress</h2>
+            <div class="progress-bar-container">
+                <div class="progress-segments">
+                    <div class="progress-segment built" id="progress-built" style="width: 0%;"></div>
+                    <div class="progress-segment review" id="progress-review" style="width: 0%;"></div>
+                    <div class="progress-segment progress" id="progress-inprogress" style="width: 0%;"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Built Stories Tab -->
-        <div class="tab-content" id="built">
-            <div class="built-stories-card">
-                <div class="built-header">
-                    <div>
-                        <h2>Built Stories</h2>
-                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Stories deployed and verified in Salesforce org</p>
-                    </div>
-                    <div class="built-count">
-                        <span class="number" id="built-stories-count">0</span>
-                        <span class="total">/ <span id="built-stories-total">33</span> stories</span>
-                    </div>
-                </div>
-                <div class="built-list" id="built-stories-list">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📦</div>
-                        <p>No stories built yet</p>
-                        <p style="font-size: 12px; margin-top: 8px;">When stories are deployed to the org, they'll appear here</p>
-                    </div>
-                </div>
+        <div class="section" id="epics-section">
+            <h2>Epics & Stories</h2>
+            <div class="empty-state" id="empty-state">
+                <h3>No Epics Yet</h3>
+                <p>Create your first specification to get started</p>
+                <code>/speckit-specify -EPIC "Feature Name" Objective: ...</code>
             </div>
-
-            <div class="section" style="margin-top: 32px;">
-                <h2 style="margin-bottom: 16px;">How to Mark Stories as Built</h2>
-                <div class="deployment-card">
-                    <p style="color: var(--text-secondary); margin-bottom: 16px;">
-                        Update <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px;">progress-tracker.json</code> to track built stories:
-                    </p>
-                    <pre style="background: var(--bg-tertiary); padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 13px;"><code>{
-  "key": "PR1070767-24",
-  "summary": "US1: KPI Header Bar",
-  "status": "built",        // Change from "pending"
-  "built": true,            // Set to true
-  "built_by": "praveen",    // Contributor ID
-  "built_date": "2026-06-15"
-}</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contributors Tab -->
-        <div class="tab-content" id="contributors">
-            <div class="section">
-                <div class="section-header">
-                    <h2>Team Token Consumption</h2>
-                    <span style="color: var(--accent-purple); font-weight: 600;">Total: <span id="team-total-tokens">485K</span></span>
-                </div>
-                
-                <div class="contributor-grid" id="contributors-list">
-                    <div class="contributor-card">
-                        <div class="contributor-header">
-                            <div class="contributor-avatar">PS</div>
-                            <div>
-                                <div class="contributor-name">Praveen Singh</div>
-                                <div class="contributor-role">Senior Technical Architect</div>
-                            </div>
-                        </div>
-                        <div class="contributor-stats">
-                            <div class="contributor-stat">
-                                <div class="contributor-stat-value">485K</div>
-                                <div class="contributor-stat-label">Tokens</div>
-                            </div>
-                            <div class="contributor-stat">
-                                <div class="contributor-stat-value">10</div>
-                                <div class="contributor-stat-label">Sessions</div>
-                            </div>
-                            <div class="contributor-stat">
-                                <div class="contributor-stat-value">3</div>
-                                <div class="contributor-stat-label">Epics</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Add more contributors card -->
-                    <div class="contributor-card" style="border-style: dashed; background: transparent;">
-                        <div style="text-align: center; padding: 20px; color: var(--text-muted);">
-                            <div style="font-size: 24px; margin-bottom: 8px;">+</div>
-                            <div style="font-size: 13px;">Add contributor in JSON</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section" style="margin-top: 32px;">
-                <h2 style="margin-bottom: 16px;">Token Breakdown by Epic & Contributor</h2>
-                <div class="chart-card">
-                    <table class="token-table">
-                        <thead>
-                            <tr>
-                                <th>Epic</th>
-                                <th>Contributor</th>
-                                <th>Sessions</th>
-                                <th style="text-align: right;">Tokens</th>
-                            </tr>
-                        </thead>
-                        <tbody id="token-breakdown-table">
-                            <tr>
-                                <td>Hospital 360 View</td>
-                                <td>Praveen Singh</td>
-                                <td>2</td>
-                                <td style="text-align: right;" class="token-value">130K</td>
-                            </tr>
-                            <tr>
-                                <td>Contact 360 (HCP)</td>
-                                <td>Praveen Singh</td>
-                                <td>4</td>
-                                <td style="text-align: right;" class="token-value">175K</td>
-                            </tr>
-                            <tr>
-                                <td>Opportunity Journey</td>
-                                <td>Praveen Singh</td>
-                                <td>4</td>
-                                <td style="text-align: right;" class="token-value">180K</td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr style="background: var(--bg-tertiary);">
-                                <td colspan="3" style="font-weight: 600;">Total</td>
-                                <td style="text-align: right; font-weight: 600;" class="token-value">485K</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-
-            <div class="section" style="margin-top: 32px;">
-                <h2 style="margin-bottom: 16px;">Adding a Contributor</h2>
-                <div class="deployment-card">
-                    <p style="color: var(--text-secondary); margin-bottom: 16px;">
-                        Add to the <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px;">contributors</code> array in progress-tracker.json:
-                    </p>
-                    <pre style="background: var(--bg-tertiary); padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 13px;"><code>{
-  "id": "john",
-  "name": "John Doe",
-  "role": "Developer",
-  "total_tokens": 0,
-  "sessions_count": 0
-}</code></pre>
-                    <p style="color: var(--text-secondary); margin-top: 16px; font-size: 13px;">
-                        Then add their sessions to <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px;">token_consumption.by_epic[].sessions</code> with <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px;">"contributor": "john"</code>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Epics & Stories Tab -->
-        <div class="tab-content" id="epics">
-            <div id="epics-list">
-                <!-- Epic 1 -->
-                <div class="epic-card">
-                    <div class="epic-header">
-                        <div class="epic-title">
-                            <span class="epic-name">Hospital 360 View</span>
-                            <span class="epic-key">PR1070767-1</span>
-                        </div>
-                        <span class="priority-badge priority-critical">Critical</span>
-                    </div>
-                    <div class="epic-progress">
-                        <div class="epic-progress-bar">
-                            <div class="progress-segments">
-                                <div class="progress-segment built" style="width: 0%;"></div>
-                                <div class="progress-segment review" style="width: 0%;"></div>
-                                <div class="progress-segment progress" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary);">
-                            <span>0 / 13 built</span>
-                            <span>130K tokens</span>
-                        </div>
-                    </div>
-                    <div class="stories-list">
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-24</span><span class="story-summary">US1: KPI Header Bar</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-25</span><span class="story-summary">US2: KAM Visit Tracker</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-26</span><span class="story-summary">US3: Overview Tab</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-27</span><span class="story-summary">US4: Account Plan Tab</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-28</span><span class="story-summary">US5: Departments Tab</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-29</span><span class="story-summary">US6: Stakeholders Tab</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-30</span><span class="story-summary">US7: Lupin Product Presence</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-31</span><span class="story-summary">US8: Competitor Presence</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-32</span><span class="story-summary">US9: Suppliers Tab</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-33</span><span class="story-summary">US10: Pipeline Tab</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-34</span><span class="story-summary">US11: Activity Timeline</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-35</span><span class="story-summary">US12: Chain Hierarchy Navigation</span><span class="story-badge">P2</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-36</span><span class="story-summary">US13: Management Roll-up</span><span class="story-badge">P2</span></div>
-                    </div>
-                </div>
-
-                <!-- Epic 2 -->
-                <div class="epic-card">
-                    <div class="epic-header">
-                        <div class="epic-title">
-                            <span class="epic-name">Contact 360 (HCP & Non-Practitioner)</span>
-                            <span class="epic-key">PR1070767-2</span>
-                        </div>
-                        <span class="priority-badge priority-high">High</span>
-                    </div>
-                    <div class="epic-progress">
-                        <div class="epic-progress-bar">
-                            <div class="progress-segments">
-                                <div class="progress-segment built" style="width: 0%;"></div>
-                                <div class="progress-segment review" style="width: 0%;"></div>
-                                <div class="progress-segment progress" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary);">
-                            <span>0 / 10 built</span>
-                            <span>175K tokens</span>
-                        </div>
-                    </div>
-                    <div class="stories-list">
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-14</span><span class="story-summary">US1: Profile Header with Record-Type Detection</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-15</span><span class="story-summary">US2: Credentials & Publications Panel</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-16</span><span class="story-summary">US3: Affiliations Panel</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-17</span><span class="story-summary">US4: Engagement Tracker</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-18</span><span class="story-summary">US5: KOL Influence Scoring</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-19</span><span class="story-summary">US6: Related Opportunities Panel</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-20</span><span class="story-summary">US7: Activity Timeline</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-21</span><span class="story-summary">US8: Coverage Roll-up</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-22</span><span class="story-summary">US9: Permission Model</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-23</span><span class="story-summary">US10: Inline Engagement Logging</span><span class="story-badge">P1</span></div>
-                    </div>
-                </div>
-
-                <!-- Epic 3 -->
-                <div class="epic-card">
-                    <div class="epic-header">
-                        <div class="epic-title">
-                            <span class="epic-name">Tender / Non-Tender Opportunity Journey</span>
-                            <span class="epic-key">PR1070767-3</span>
-                        </div>
-                        <span class="priority-badge priority-high">High</span>
-                    </div>
-                    <div class="epic-progress">
-                        <div class="epic-progress-bar">
-                            <div class="progress-segments">
-                                <div class="progress-segment built" style="width: 0%;"></div>
-                                <div class="progress-segment review" style="width: 0%;"></div>
-                                <div class="progress-segment progress" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary);">
-                            <span>0 / 10 built</span>
-                            <span>180K tokens</span>
-                        </div>
-                    </div>
-                    <div class="stories-list">
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-4</span><span class="story-summary">US1: Opportunity Typing (Tender vs Non-Tender)</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-5</span><span class="story-summary">US2: Tender Path Fields & Stages</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-6</span><span class="story-summary">US3: Bid Plan Builder</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-7</span><span class="story-summary">US4: Non-Tender Path & Account Plan Linkage</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-8</span><span class="story-summary">US5: Go/No-Go Stage-Gated Approvals</span><span class="story-badge">MVP</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-9</span><span class="story-summary">US6: Win/Loss Capture</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-10</span><span class="story-summary">US7: Quote Handoff</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-11</span><span class="story-summary">US8: Management Dashboard</span><span class="story-badge">P1</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-12</span><span class="story-summary">US9: Tender Calendar View</span><span class="story-badge">P2</span></div>
-                        <div class="story-row"><div class="story-status status-pending"></div><span class="story-key">PR1070767-13</span><span class="story-summary">US10: Competitive Intelligence Panel</span><span class="story-badge">P2</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Token Details Tab -->
-        <div class="tab-content" id="tokens">
-            <div class="section">
-                <h2 style="margin-bottom: 16px;">Token Consumption Sessions</h2>
-                
-                <div class="epic-card">
-                    <div class="epic-header">
-                        <div class="epic-title">
-                            <span class="epic-name">Hospital 360 View</span>
-                            <span style="color: var(--accent-purple); font-weight: 600; margin-left: 12px;">130K tokens</span>
-                        </div>
-                    </div>
-                    <table class="token-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Contributor</th>
-                                <th>Activity</th>
-                                <th style="text-align: right;">Tokens</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Jun 11, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>Initial spec creation, data model, research, plan, tasks</td>
-                                <td style="text-align: right;" class="token-value">85K</td>
-                            </tr>
-                            <tr>
-                                <td>Jun 12, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>Jira epic update, 13 stories creation with detailed FRs</td>
-                                <td style="text-align: right;" class="token-value">45K</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="epic-card">
-                    <div class="epic-header">
-                        <div class="epic-title">
-                            <span class="epic-name">Contact 360 (HCP & Non-Practitioner)</span>
-                            <span style="color: var(--accent-purple); font-weight: 600; margin-left: 12px;">175K tokens</span>
-                        </div>
-                    </div>
-                    <table class="token-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Contributor</th>
-                                <th>Activity</th>
-                                <th style="text-align: right;">Tokens</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Jun 11, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>speckit-plan, research, data model, apex contracts</td>
-                                <td style="text-align: right;" class="token-value">75K</td>
-                            </tr>
-                            <tr>
-                                <td>Jun 11, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>speckit-tasks, quickstart guide generation</td>
-                                <td style="text-align: right;" class="token-value">35K</td>
-                            </tr>
-                            <tr>
-                                <td>Jun 11, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>speckit-analyze (PASS verdict)</td>
-                                <td style="text-align: right;" class="token-value">25K</td>
-                            </tr>
-                            <tr>
-                                <td>Jun 12, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>Jira epic creation, 10 stories with detailed FRs</td>
-                                <td style="text-align: right;" class="token-value">40K</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="epic-card">
-                    <div class="epic-header">
-                        <div class="epic-title">
-                            <span class="epic-name">Tender / Non-Tender Opportunity Journey</span>
-                            <span style="color: var(--accent-purple); font-weight: 600; margin-left: 12px;">180K tokens</span>
-                        </div>
-                    </div>
-                    <table class="token-table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Contributor</th>
-                                <th>Activity</th>
-                                <th style="text-align: right;">Tokens</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Jun 12, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>speckit-specify, full spec generation</td>
-                                <td style="text-align: right;" class="token-value">65K</td>
-                            </tr>
-                            <tr>
-                                <td>Jun 12, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>Wireframe generation (Figma + ASCII SLDS)</td>
-                                <td style="text-align: right;" class="token-value">45K</td>
-                            </tr>
-                            <tr>
-                                <td>Jun 12, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>Jira epic creation, 10 stories with detailed FRs</td>
-                                <td style="text-align: right;" class="token-value">35K</td>
-                            </tr>
-                            <tr>
-                                <td>Jun 12, 2026</td>
-                                <td>Praveen Singh</td>
-                                <td>Story updates with edge cases and FRs</td>
-                                <td style="text-align: right;" class="token-value">35K</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <div id="epics-list"></div>
         </div>
 
         <footer class="footer">
-            <span>Last updated: <span id="last-updated">Jun 12, 2026 5:51 PM IST</span></span>
-            <span>Data source: progress-tracker.json</span>
+            <span>Last updated: <span id="last-updated">-</span></span>
+            <span>Powered by SpecKit</span>
         </footer>
     </div>
 
     <script>
-        // Tab switching
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.tab).classList.add('active');
-            });
-        });
-
-        // Load and render data from JSON
         async function loadData() {
             try {
                 const response = await fetch('./progress-tracker.json');
                 const data = await response.json();
-                updateDashboard(data);
+                renderDashboard(data);
             } catch (e) {
-                console.log('Running with embedded static data');
+                console.log('No data loaded yet');
             }
         }
         
         function formatTokens(tokens) {
-            return tokens >= 1000000 
-                ? (tokens / 1000000).toFixed(1) + 'M' 
-                : Math.round(tokens / 1000) + 'K';
+            if (!tokens) return '0';
+            return tokens >= 1000000 ? (tokens / 1000000).toFixed(1) + 'M' : Math.round(tokens / 1000) + 'K';
         }
         
-        function updateDashboard(data) {
-            // Summary stats
-            document.getElementById('total-epics').textContent = data.summary.total_epics;
-            document.getElementById('total-stories').textContent = data.summary.total_stories;
-            document.getElementById('stories-built').textContent = data.summary.stories_built;
-            document.getElementById('stories-progress').textContent = data.summary.stories_in_progress || 0;
-            document.getElementById('stories-review').textContent = data.summary.stories_in_review || 0;
-            document.getElementById('total-tokens').textContent = formatTokens(data.summary.total_tokens);
+        function renderDashboard(data) {
+            document.getElementById('project-name').textContent = data.project?.name || 'Project Dashboard';
+            document.getElementById('project-subtitle').textContent = 'Salesforce Org: ' + (data.project?.salesforce_org || 'Not configured');
             
-            // Progress bar
-            const total = data.summary.total_stories;
-            const built = data.summary.stories_built;
-            const review = data.summary.stories_in_review || 0;
-            const progress = data.summary.stories_in_progress || 0;
-            const pending = total - built - review - progress;
+            if (data.project?.jira_url) {
+                const jiraLink = document.getElementById('jira-link');
+                jiraLink.href = data.project.jira_url;
+                jiraLink.style.display = 'inline';
+            }
+            
+            if (data.project?.github_repo) {
+                const ghLink = document.getElementById('github-link');
+                ghLink.href = data.project.github_repo;
+                ghLink.style.display = 'inline';
+            }
+            
+            document.getElementById('total-epics').textContent = data.summary?.total_epics || 0;
+            document.getElementById('total-stories').textContent = data.summary?.total_stories || 0;
+            document.getElementById('stories-built').textContent = data.summary?.stories_built || 0;
+            document.getElementById('stories-progress').textContent = data.summary?.stories_in_progress || 0;
+            document.getElementById('completion').textContent = (data.summary?.completion_percentage || 0) + '%';
+            document.getElementById('total-tokens').textContent = formatTokens(data.summary?.total_tokens);
+            
+            const total = data.summary?.total_stories || 1;
+            const built = data.summary?.stories_built || 0;
+            const review = data.summary?.stories_in_review || 0;
+            const progress = data.summary?.stories_in_progress || 0;
             
             document.getElementById('progress-built').style.width = (built / total * 100) + '%';
             document.getElementById('progress-review').style.width = (review / total * 100) + '%';
             document.getElementById('progress-inprogress').style.width = (progress / total * 100) + '%';
-            document.getElementById('progress-percent').textContent = Math.round(built / total * 100) + '%';
             
-            document.getElementById('legend-built').textContent = built;
-            document.getElementById('legend-review').textContent = review;
-            document.getElementById('legend-progress').textContent = progress;
-            document.getElementById('legend-pending').textContent = pending;
-            
-            // Built stories
-            document.getElementById('built-stories-count').textContent = built;
-            document.getElementById('built-stories-total').textContent = total;
-            
-            // Deployment status
-            const deployment = data.deployment_status;
-            if (deployment && deployment.last_deployment) {
-                document.getElementById('deployment-dot').classList.remove('none');
-                document.getElementById('deployment-dot').classList.add('active');
-                document.getElementById('deployment-status-text').textContent = 'Last: ' + deployment.last_deployment;
+            if (data.epics && data.epics.length > 0) {
+                document.getElementById('empty-state').style.display = 'none';
+                // Render epics...
             }
             
-            if (deployment && deployment.deployed_components) {
-                const dc = deployment.deployed_components;
-                document.getElementById('deployed-objects').textContent = dc.custom_objects?.length || 0;
-                document.getElementById('deployed-fields').textContent = dc.custom_fields?.length || 0;
-                document.getElementById('deployed-apex').textContent = dc.apex_classes?.length || 0;
-                document.getElementById('deployed-lwc').textContent = dc.lwc_components?.length || 0;
-                document.getElementById('deployed-permsets').textContent = dc.permission_sets?.length || 0;
-                document.getElementById('deployed-pages').textContent = dc.flexipages?.length || 0;
+            if (data.project?.last_updated) {
+                document.getElementById('last-updated').textContent = new Date(data.project.last_updated).toLocaleString();
             }
-            
-            // Last updated
-            document.getElementById('last-updated').textContent = 
-                new Date(data.project.last_updated).toLocaleString();
         }
         
         loadData();

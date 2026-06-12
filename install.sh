@@ -1,5 +1,5 @@
 #!/bin/bash
-# SpecKit Generic Installer
+# SpecKit Salesforce Installer
 # Installs SpecKit for any Salesforce development project
 
 set -e
@@ -18,12 +18,14 @@ clear
 echo ""
 echo -e "${CYAN}╔════════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${CYAN}║        ${BOLD}SpecKit - Salesforce Development Accelerator${NC}${CYAN}           ║${NC}"
-echo -e "${CYAN}║                     Generic Edition v1.0                       ║${NC}"
+echo -e "${CYAN}║                    Salesforce Edition v1.0                     ║${NC}"
 echo -e "${CYAN}╠════════════════════════════════════════════════════════════════╣${NC}"
 echo -e "${CYAN}║   • Intent-driven specifications                               ║${NC}"
 echo -e "${CYAN}║   • Progress dashboard with GitHub Pages                       ║${NC}"
 echo -e "${CYAN}║   • Jira integration & status sync                             ║${NC}"
 echo -e "${CYAN}║   • Multi-contributor token tracking                           ║${NC}"
+echo -e "${CYAN}║   • Memory files (taxonomy, domain, regulatory)                ║${NC}"
+echo -e "${CYAN}║   • Salesforce Constitution governance                         ║${NC}"
 echo -e "${CYAN}╚════════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
