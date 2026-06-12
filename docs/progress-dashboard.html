@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Progress Dashboard</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border-color: #30363d;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-yellow: #d29922;
+            --accent-red: #f85149;
+            --accent-purple: #a371f7;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+        
+        header { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color); }
+        h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+        .subtitle { color: var(--text-secondary); font-size: 14px; }
+        
+        .links { margin-top: 12px; display: flex; gap: 16px; flex-wrap: wrap; }
+        .links a { color: var(--accent-blue); text-decoration: none; font-size: 14px; }
+        .links a:hover { text-decoration: underline; }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value { font-size: 28px; font-weight: 600; }
+        .stat-value.blue { color: var(--accent-blue); }
+        .stat-value.green { color: var(--accent-green); }
+        .stat-value.yellow { color: var(--accent-yellow); }
+        .stat-value.purple { color: var(--accent-purple); }
+        
+        .section { margin-bottom: 32px; }
+        h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+        
+        .progress-bar-container {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-segments { display: flex; height: 100%; }
+        .progress-segment { height: 100%; }
+        .progress-segment.built { background: var(--accent-green); }
+        .progress-segment.review { background: var(--accent-yellow); }
+        .progress-segment.progress { background: var(--accent-blue); }
+        
+        .empty-state {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+        
+        .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--text-secondary); }
+        .empty-state p { font-size: 14px; margin-bottom: 16px; }
+        .empty-state code {
+            background: var(--bg-tertiary);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--accent-yellow);
+        }
+        
+        .footer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="project-name">Project Progress Dashboard</h1>
+            <div class="subtitle" id="project-subtitle">Salesforce Development Project</div>
+            <div class="links">
+                <a href="#" id="jira-link" style="display:none;">Jira Board</a>
+                <a href="#" id="github-link" style="display:none;">GitHub Repository</a>
+            </div>
+        </header>
+
+        <div class="summary-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Epics</div>
+                <div class="stat-value blue" id="total-epics">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Stories</div>
+                <div class="stat-value green" id="total-stories">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Stories Built</div>
+                <div class="stat-value green" id="stories-built">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">In Progress</div>
+                <div class="stat-value blue" id="stories-progress">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Completion</div>
+                <div class="stat-value yellow" id="completion">0%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Est. Tokens</div>
+                <div class="stat-value purple" id="total-tokens">0</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Progress</h2>
+            <div class="progress-bar-container">
+                <div class="progress-segments">
+                    <div class="progress-segment built" id="progress-built" style="width: 0%;"></div>
+                    <div class="progress-segment review" id="progress-review" style="width: 0%;"></div>
+                    <div class="progress-segment progress" id="progress-inprogress" style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="epics-section">
+            <h2>Epics & Stories</h2>
+            <div class="empty-state" id="empty-state">
+                <h3>No Epics Yet</h3>
+                <p>Create your first specification to get started</p>
+                <code>/speckit-specify -EPIC "Feature Name" Objective: ...</code>
+            </div>
+            <div id="epics-list"></div>
+        </div>
+
+        <footer class="footer">
+            <span>Last updated: <span id="last-updated">-</span></span>
+            <span>Powered by SpecKit</span>
+        </footer>
+    </div>
+
+    <script>
+        async function loadData() {
+            try {
+                const response = await fetch('./progress-tracker.json');
+                const data = await response.json();
+                renderDashboard(data);
+            } catch (e) {
+                console.log('No data loaded yet');
+            }
+        }
+        
+        function formatTokens(tokens) {
+            if (!tokens) return '0';
+            return tokens >= 1000000 ? (tokens / 1000000).toFixed(1) + 'M' : Math.round(tokens / 1000) + 'K';
+        }
+        
+        function renderDashboard(data) {
+            document.getElementById('project-name').textContent = data.project?.name || 'Project Dashboard';
+            document.getElementById('project-subtitle').textContent = 'Salesforce Org: ' + (data.project?.salesforce_org || 'Not configured');
+            
+            if (data.project?.jira_url) {
+                const jiraLink = document.getElementById('jira-link');
+                jiraLink.href = data.project.jira_url;
+                jiraLink.style.display = 'inline';
+            }
+            
+            if (data.project?.github_repo) {
+                const ghLink = document.getElementById('github-link');
+                ghLink.href = data.project.github_repo;
+                ghLink.style.display = 'inline';
+            }
+            
+            document.getElementById('total-epics').textContent = data.summary?.total_epics || 0;
+            document.getElementById('total-stories').textContent = data.summary?.total_stories || 0;
+            document.getElementById('stories-built').textContent = data.summary?.stories_built || 0;
+            document.getElementById('stories-progress').textContent = data.summary?.stories_in_progress || 0;
+            document.getElementById('completion').textContent = (data.summary?.completion_percentage || 0) + '%';
+            document.getElementById('total-tokens').textContent = formatTokens(data.summary?.total_tokens);
+            
+            const total = data.summary?.total_stories || 1;
+            const built = data.summary?.stories_built || 0;
+            const review = data.summary?.stories_in_review || 0;
+            const progress = data.summary?.stories_in_progress || 0;
+            
+            document.getElementById('progress-built').style.width = (built / total * 100) + '%';
+            document.getElementById('progress-review').style.width = (review / total * 100) + '%';
+            document.getElementById('progress-inprogress').style.width = (progress / total * 100) + '%';
+            
+            if (data.epics && data.epics.length > 0) {
+                document.getElementById('empty-state').style.display = 'none';
+                // Render epics...
+            }
+            
+            if (data.project?.last_updated) {
+                document.getElementById('last-updated').textContent = new Date(data.project.last_updated).toLocaleString();
+            }
+        }
+        
+        loadData();
+    </script>
+</body>
+</html>
