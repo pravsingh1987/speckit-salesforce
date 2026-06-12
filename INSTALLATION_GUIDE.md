@@ -269,17 +269,118 @@ You can also use natural language:
 
 ### Step 1: Define Your Feature
 
+The `/speckit-specify` command accepts multiple input types. You can provide as much context as available:
+
+#### Input Types Accepted
+
+| Input Type | Description | Example |
+|------------|-------------|---------|
+| **Objective Statement** | High-level goal | "Allow customers to manage their accounts online" |
+| **Meeting Transcripts** | Recorded meeting notes | Paste transcript from Zoom/Teams/Otter.ai |
+| **Recording Summaries** | AI-generated meeting summaries | GPT/Claude summary of stakeholder call |
+| **Discussion Notes** | Email threads, Slack conversations | Copy relevant discussion points |
+| **Wireframes/Mockups** | Visual references | Describe or reference Figma/sketch |
+| **Requirements Documents** | PRDs, BRDs, user stories | Paste or summarize key requirements |
+| **Existing System Analysis** | Current state documentation | "Currently using spreadsheets for X..." |
+| **Stakeholder Interviews** | Interview transcripts | Q&A format from discovery sessions |
+| **Competitor Analysis** | Reference implementations | "Similar to how Competitor X does..." |
+
+#### Basic Format
+
+```
+/speckit-specify -EPIC "Feature Name"
+Objective: What you want to achieve
+Primary users: Who will use it
+Core objects: Salesforce objects involved
+Capabilities:
+* Capability 1
+* Capability 2
+```
+
+#### Rich Input Example (with Meeting Transcript)
+
 ```
 /speckit-specify -EPIC "Customer Self-Service Portal"
-Objective: Allow customers to view and manage their accounts online
-Primary users: Customers, Support Agents
-Core objects: Account, Contact, Case, Portal_Session__c
-Capabilities:
-* Customer login and authentication
-* View account details and history
-* Submit and track support cases
-* Update contact information
-* View invoices and payments
+
+## Meeting Transcript (Discovery Call - June 10, 2026)
+
+**Participants**: John (Product Owner), Sarah (Business Analyst), Mike (IT Lead)
+
+**John**: "We need customers to log in and see their account status without calling support."
+
+**Sarah**: "They should be able to submit cases directly and track them. Currently they email us and it's chaos."
+
+**Mike**: "We have Account and Contact data. Cases are already in Salesforce. We just need the portal layer."
+
+**John**: "Budget for Phase 1 is basic - login, view account, submit case. Phase 2 adds payments."
+
+---
+
+## Intent Summary
+
+Objective: Allow customers to self-serve for account inquiries and case submission
+Primary users: B2B Customers (portal users), Support Agents (internal)
+Core objects: Account, Contact, Case, User (Community)
+
+## Key Requirements from Discussion
+
+* SSO integration with customer's Azure AD
+* Read-only account view (no editing in Phase 1)
+* Case submission with file attachments
+* Email notifications on case status change
+* Mobile-responsive design
+
+## Constraints Mentioned
+
+* Must use Salesforce Experience Cloud
+* Go-live target: Q3 2026
+* No custom authentication - use standard Salesforce login
+```
+
+#### Example with Wireframe Reference
+
+```
+/speckit-specify -EPIC "Sales Dashboard"
+
+## Wireframe Description
+
+The dashboard shows:
+- Top row: 4 KPI cards (Pipeline Value, Win Rate, Avg Deal Size, Deals Closing This Month)
+- Middle: Bar chart showing pipeline by stage
+- Bottom left: Table of top 10 opportunities
+- Bottom right: Activity feed of recent updates
+
+## Figma Reference
+See: https://figma.com/file/xxx/Sales-Dashboard-Mockup
+
+## Discussion Summary (from Slack #sales-ops)
+
+Sales VP wants to see their team's pipeline at a glance. Current reports require 5 clicks.
+Must work on mobile for field reps. Real-time data preferred but 15-min delay acceptable.
+```
+
+#### Example with Requirements Document
+
+```
+/speckit-specify -EPIC "Order Management Enhancement"
+
+## PRD Summary (from Confluence)
+
+### Problem Statement
+Order processing takes 3 days due to manual approval routing.
+
+### Proposed Solution
+Automated approval workflow based on order value and customer tier.
+
+### User Stories (from Jira)
+- US-101: As a sales rep, I want orders under $10K auto-approved
+- US-102: As a manager, I want to approve orders $10K-$50K in one click
+- US-103: As a director, I want visibility into all pending approvals
+
+### Acceptance Criteria
+- Orders < $10K: Auto-approve, notify rep
+- Orders $10K-$50K: Route to manager, 24hr SLA
+- Orders > $50K: Route to director with full margin analysis
 ```
 
 ### Step 2: Review the Generated Spec
@@ -477,6 +578,179 @@ Edit `docs/progress-tracker.json`:
 
 ---
 
+## Salesforce Constitution
+
+The Salesforce Constitution is a governance document that defines architectural principles, security rules, and development standards for your project.
+
+### Why Use a Constitution?
+
+| Benefit | Description |
+|---------|-------------|
+| **Consistency** | All code follows the same patterns and standards |
+| **Security** | Enforces CRUD/FLS, user mode, and access controls |
+| **Quality** | Mandates testing standards, code coverage, and documentation |
+| **Governance** | Provides audit trail and change management |
+
+### Setting Up Your Constitution
+
+1. **Copy the sample constitution:**
+   ```bash
+   cp sample-constitution.md .specify/memory/constitution.md
+   ```
+
+2. **Customize for your project:**
+   - Replace `[YOUR-PROJECT]` with your project name
+   - Replace `[Your Organization]` with your org name
+   - Add industry-specific principles if needed
+   - Update Salesforce org alias
+
+3. **Verify with SpecKit:**
+   ```
+   /speckit-constitution
+   ```
+
+### Sample Constitution Sections
+
+The included `sample-constitution.md` covers:
+
+- **Principle I**: Architectural Integrity & Platform-First
+- **Principle II**: Security & Access Control
+- **Principle III**: Governor Limits & Bulkification
+- **Principle IV**: Apex Code Quality Standards
+- **Principle V**: Apex Testing Standards
+- **Principle VI**: Permission Sets & Security Governance
+- **Principle VII**: Lightning Web Components Standards
+- **Principle VIII**: Agentforce & Agent Script Standards
+
+### Industry Extensions
+
+For specific industries, add additional principles:
+
+**Healthcare/Life Sciences:**
+```markdown
+### IX. Industry-First, Minimal Customization
+Standard and industry-cloud capabilities MUST be preferred over bespoke build.
+
+### X. Salesforce Life Sciences Data Model Alignment
+HCO = Account; HCP = Contact. Use native Health Cloud affiliations.
+```
+
+**Financial Services:**
+```markdown
+### IX. Financial Services Cloud Data Model
+Use standard FSC objects (FinancialAccount, FinancialGoal, etc.)
+
+### X. Compliance & Audit Trail
+All changes must be auditable. Implement Field History Tracking.
+```
+
+---
+
+## Salesforce PS Audit Tool Integration
+
+The Salesforce Professional Services Audit Tool validates your implementation against best practices.
+
+### Tool Overview
+
+| Feature | Description |
+|---------|-------------|
+| **Static Analysis** | Scans Apex, LWC, and metadata for anti-patterns |
+| **5-Tier Grading** | CRITICAL, High, Medium, Low, Informational |
+| **Coverage Areas** | Governor limits, security, performance, testing |
+
+### Installation
+
+1. **Obtain the Audit Tool:**
+   - Contact Salesforce Professional Services
+   - Or download from internal Salesforce Partner Portal
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Configure in Constitution:**
+   Update `.specify/memory/constitution.md`:
+   ```markdown
+   ## Audit & Anti-Pattern Tooling
+   
+   | Setting | Value |
+   |---------|-------|
+   | **Tool Location** | `~/Documents/Sf PS Audit Tool/salesforce-audit-tool-v1.2.17` |
+   | **Target Org** | `my-org-alias` |
+   ```
+
+### Running an Audit
+
+```bash
+# 1. Navigate to audit tool
+cd ~/Documents/Sf\ PS\ Audit\ Tool/salesforce-audit-tool-v1.2.17
+
+# 2. Authenticate target org
+sf org login web --alias my-org
+
+# 3. Run audit
+python3 salesforce_audit.py --sfdx my-org
+
+# 4. Review report
+open audit_reports/latest_report.html
+```
+
+### Audit Categories
+
+| Category | What It Checks |
+|----------|---------------|
+| **Governor Limits** | SOQL/DML in loops, query limits |
+| **Security** | CRUD/FLS enforcement, SOQL injection, XSS |
+| **Performance** | SOQL selectivity, query optimization |
+| **Test Coverage** | 75% minimum, meaningful assertions |
+| **Apex Patterns** | Trigger handler, bulkification, error handling |
+| **LWC Standards** | Component structure, wire adapters, SLDS |
+
+### Integrating with SpecKit
+
+1. **Run audit during `/speckit-analyze`:**
+   ```
+   /speckit-analyze --with-audit
+   ```
+
+2. **Constitution gate enforcement:**
+   - CRITICAL/High findings block completion
+   - Medium findings flagged for review
+   - Low findings tracked for future iterations
+
+### Sample Audit Report
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║            SALESFORCE AUDIT REPORT - my-org                  ║
+╠══════════════════════════════════════════════════════════════╣
+║ OVERALL GRADE: B (78/100)                                    ║
+╠══════════════════════════════════════════════════════════════╣
+║ CRITICAL: 0  │  HIGH: 2  │  MEDIUM: 5  │  LOW: 12           ║
+╚══════════════════════════════════════════════════════════════╝
+
+HIGH FINDINGS:
+━━━━━━━━━━━━━━
+[H-001] AccountTriggerHandler.cls:45
+        SOQL inside FOR loop detected
+        Fix: Move query outside loop, use Map for lookup
+
+[H-002] ContactService.cls:112
+        Missing CRUD check before DML
+        Fix: Add Schema.sObjectType.Contact.isCreateable()
+
+MEDIUM FINDINGS:
+━━━━━━━━━━━━━━━━
+[M-001] OpportunityController.cls:23
+        System.debug() in production code
+        Fix: Remove debug statements
+
+...
+```
+
+---
+
 ## Troubleshooting
 
 ### Installation Problems
@@ -534,25 +808,33 @@ your-project/
 │       ├── speckit-specify/SKILL.md
 │       ├── speckit-plan/SKILL.md
 │       ├── speckit-tasks/SKILL.md
-│       ├── speckit-wireframe/SKILL.md    ← Wireframe skill
+│       ├── speckit-wireframe/SKILL.md    ← Wireframe generation
 │       ├── speckit-analyze/SKILL.md
 │       ├── speckit-implement/SKILL.md
 │       ├── speckit-dashboard/SKILL.md
 │       ├── speckit-checklist/SKILL.md
 │       ├── speckit-clarify/SKILL.md
-│       ├── speckit-constitution/SKILL.md
+│       ├── speckit-constitution/SKILL.md ← Governance checker
 │       ├── speckit-taskstoissues/SKILL.md
 │       └── speckit-agent-context-update/SKILL.md
 ├── .specify/
 │   ├── templates/
+│   │   ├── spec-template.md
+│   │   ├── plan-template.md
+│   │   ├── tasks-template.md
+│   │   └── progress-tracker-template.json
 │   ├── scripts/
+│   │   └── bash/
+│   │       └── setup-dashboard.sh
 │   ├── memory/
+│   │   └── constitution.md              ← Your project constitution
 │   └── integrations/
 ├── docs/
 │   ├── progress-dashboard.html
 │   ├── progress-tracker.json
 │   ├── jira-integration.md
 │   └── README.md
+├── sample-constitution.md               ← Template to customize
 └── specs/
     └── (your specifications will be here)
 ```
