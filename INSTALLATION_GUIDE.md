@@ -48,6 +48,12 @@ SpecKit Salesforce Edition is a universal development accelerator for any Salesf
 
 ### Step 1: Clone the Package
 
+**For Salesforce Internal Users (Recommended):**
+```bash
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+```
+
+**For External Users:**
 ```bash
 git clone https://github.com/pravsingh1987/speckit-salesforce.git
 ```
@@ -65,9 +71,9 @@ cd my-salesforce-project
 bash /path/to/speckit-salesforce/install.sh .
 ```
 
-**Example:**
+**Example (Salesforce Internal):**
 ```bash
-bash ~/Downloads/speckit-salesforce/install.sh .
+bash ~/speckit-salesforce/install.sh .
 ```
 
 ### Step 4: Answer the Configuration Prompts

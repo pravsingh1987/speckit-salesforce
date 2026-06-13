@@ -15,8 +15,20 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 
 ## Quick Install
 
+### For Salesforce Internal Users (git.soma)
+
 ```bash
-# Clone the package
+# Clone from Salesforce internal GitHub
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+
+# Install to your project
+bash speckit-salesforce/install.sh /path/to/your-project
+```
+
+### For External Users (github.com)
+
+```bash
+# Clone from public GitHub
 git clone https://github.com/pravsingh1987/speckit-salesforce.git
 
 # Install to your project
