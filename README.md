@@ -15,24 +15,43 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 
 ## Quick Install
 
-> ⚠️ **Run in macOS Terminal** - Cursor's sandbox blocks installation for security.
-> This is a one-time setup (30 seconds). After that, everything works inside Cursor.
+### Method 1: Symlink Install (Recommended)
 
-### One-Liner Install (Salesforce Internal)
-
-Open **Terminal** (Cmd+Space → type "Terminal") and paste:
+**One-time setup** — clone once, use in ALL projects:
 
 ```bash
-cd ~ && git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git .speckit-sf && bash .speckit-sf/install.sh
+# 1. Clone toolkit to a permanent location
+cd ~/code  # or wherever you keep repos
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+# OR: git clone https://github.com/pravsingh1987/speckit-salesforce.git
+
+# 2. Symlink skills to Cursor
+ln -sf "$PWD/speckit-salesforce/.cursor/skills" "$HOME/.cursor/skills"
+
+# 3. Verify
+ls ~/.cursor/skills/speckit-specify/SKILL.md
 ```
 
-### One-Liner Install (External/GitHub)
+Then in **any** Salesforce project, open Cursor and run:
+```
+/speckit-init
+```
+
+### Method 2: Per-Project Install
+
+For self-contained projects (copies files into each project):
 
 ```bash
-cd ~ && git clone https://github.com/pravsingh1987/speckit-salesforce.git .speckit-sf && bash .speckit-sf/install.sh
+# In your project directory
+cd ~/my-salesforce-project
+
+# Clone and install
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git .speckit-src
+bash .speckit-src/install.sh .
+rm -rf .speckit-src  # optional cleanup
 ```
 
-### Alternative: pip Install
+### Method 3: pip Install
 
 ```bash
 pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
