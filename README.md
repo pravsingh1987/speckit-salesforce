@@ -15,37 +15,45 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 
 ## Quick Install
 
-**One command. Works in Cursor's terminal OR macOS Terminal — your choice.**
+Cursor loads agent skills **per project** (from `<project>/.cursor/skills/`), so you install SpecKit into each project you want to use it in. The command below does that in one step.
+
+**Run this from inside your project folder.** Works in Cursor's integrated terminal OR macOS Terminal:
 
 Salesforce Internal:
 
 ```bash
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; ln -sf ~/.speckit-salesforce/.cursor/skills ~/.cursor/skills && echo "✅ SpecKit installed — run /speckit-init in any project"
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
 ```
 
 External / GitHub:
 
 ```bash
-git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; ln -sf ~/.speckit-salesforce/.cursor/skills ~/.cursor/skills && echo "✅ SpecKit installed — run /speckit-init in any project"
+git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
 ```
 
-Then open **any** Salesforce project in Cursor and run:
+This caches the package in `~/.speckit-salesforce` and copies the skills, `.specify/`, and `docs/` into your current project. Then:
 
-```
-/speckit-init
-```
+1. **Reload Cursor** (Cmd+Shift+P → "Reload Window")
+2. All `/speckit-*` commands now work in this project
 
-That's it. All `/speckit-*` commands now work in every project.
+> **Why per-project?** Unlike Claude Code (which has a global `~/.claude/skills/`), Cursor reads skills from each project's `.cursor/skills/` folder. There is no global skills directory in Cursor, so each project needs its own copy. The one-liner makes that a single command.
 
-> **Why this works everywhere:** The command clones to `~/.speckit-salesforce` (outside any project) and symlinks the skills into Cursor. Because *you* run it interactively, there's no sandbox — it works identically in Cursor's integrated terminal and macOS Terminal.
-
-### To Update Later
+### Adding SpecKit to Another Project
 
 ```bash
-cd ~/.speckit-salesforce && git pull
+cd ~/another-project
+bash ~/.speckit-salesforce/install.sh .
 ```
 
-Skills update instantly — no reinstall needed.
+(The package is already cached, so this is instant.)
+
+### To Update the Cached Package
+
+```bash
+git -C ~/.speckit-salesforce pull
+```
+
+Then re-run `bash ~/.speckit-salesforce/install.sh .` in any project, or use `./update.sh`.
 
 ### Alternative: pip Install
 

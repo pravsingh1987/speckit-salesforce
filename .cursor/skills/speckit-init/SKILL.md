@@ -14,8 +14,12 @@ Initialize the SpecKit directory structure in the current project. This skill is
 
 ## Prerequisites
 
-- SpecKit skills are available (via symlink to `~/.cursor/skills/`)
+- SpecKit skills are available in this project's `.cursor/skills/` (installed via `install.sh`)
 - Current directory is a Salesforce project (or will become one)
+
+> Note: The one-command install (`bash ~/.speckit-salesforce/install.sh .`) already copies
+> `.specify/`, `docs/`, and `specs/` into the project. Use `/speckit-init` only when you need
+> to re-scaffold or reconfigure an existing project.
 
 ## Outline
 

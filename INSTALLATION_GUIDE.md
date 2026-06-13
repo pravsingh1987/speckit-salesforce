@@ -5,9 +5,9 @@
 1. [Overview](#overview)
 2. [Prerequisites](#prerequisites)
 3. [Installation Steps](#installation-steps)
-   - [Method 1: Symlink Installation](#method-1-symlink-installation-recommended-for-multiple-projects)
-   - [Method 2: CLI Installation](#method-2-cli-installation)
-   - [Method 3: Per-Project Installation](#method-3-per-project-installation-git-clone)
+   - [How Cursor Loads Skills](#how-cursor-loads-skills-important)
+   - [Recommended: One-Command Install](#recommended-one-command-install)
+   - [Alternative: CLI Installation](#alternative-cli-installation-pipuv)
 4. [Post-Installation Setup](#post-installation-setup)
 5. [How to Use SpecKit](#how-to-use-speckit)
 6. [Available Commands](#available-commands)
@@ -48,29 +48,43 @@ SpecKit Salesforce Edition is a universal development accelerator for any Salesf
 
 ## Installation Steps
 
+### How Cursor Loads Skills (Important)
+
+Cursor reads agent skills from **each project's** `.cursor/skills/` folder. There is **no global skills directory** in Cursor (unlike Claude Code's `~/.claude/skills/`). This means SpecKit must be installed **into each project** where you want to use it.
+
+The one-command install below caches the package once, then copies skills into your current project. Adding it to more projects later is instant.
+
 ### Recommended: One-Command Install
 
-**This single command works in BOTH Cursor's integrated terminal AND macOS Terminal.**
+**Run this from inside your project folder.** Works in BOTH Cursor's integrated terminal AND macOS Terminal.
 
 Salesforce Internal:
 
 ```bash
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; ln -sf ~/.speckit-salesforce/.cursor/skills ~/.cursor/skills && echo "✅ SpecKit installed — run /speckit-init in any project"
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
 ```
 
 External / GitHub:
 
 ```bash
-git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; ln -sf ~/.speckit-salesforce/.cursor/skills ~/.cursor/skills && echo "✅ SpecKit installed — run /speckit-init in any project"
+git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
 ```
 
-Then open **any** Salesforce project in Cursor and run:
+This copies the skills, `.specify/`, and `docs/` into your current project, then runs the configuration wizard.
 
-```
-/speckit-init
-```
+After it finishes:
 
-This bootstraps `.specify/`, `docs/`, and `specs/` in your project.
+1. **Reload Cursor** (Cmd+Shift+P → "Reload Window") so it picks up the new skills
+2. All `/speckit-*` commands now work in this project
+
+#### Adding SpecKit to Another Project
+
+The package is cached in `~/.speckit-salesforce`, so this is instant:
+
+```bash
+cd ~/another-project
+bash ~/.speckit-salesforce/install.sh .
+```
 
 #### Why This Works in Cursor's Terminal
 
@@ -78,23 +92,22 @@ A common misconception is that you must use macOS Terminal. **That's not true fo
 
 - Cursor's sandbox only restricts the **AI agent's** automated commands.
 - When **you** paste a command into a terminal (Cursor's or macOS), it runs as a normal shell — **no sandbox**.
-- The command clones to `~/.speckit-salesforce` (outside the project) and symlinks skills into Cursor.
 
 So this works identically whether you run it in Cursor or macOS Terminal. Pick whichever is open.
 
-#### To Update Later
+#### To Update the Cached Package
 
 ```bash
-cd ~/.speckit-salesforce && git pull
+git -C ~/.speckit-salesforce pull
 ```
 
-Skills update instantly across all projects — no reinstall needed.
+Then re-run `bash ~/.speckit-salesforce/install.sh .` in a project, or use that project's `./update.sh`.
 
 ---
 
 ### Alternative: CLI Installation (pip/uv)
 
-If you prefer a Python CLI that doesn't use symlinks:
+If you prefer a Python CLI:
 
 **Step 1: Install the CLI**
 
