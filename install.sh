@@ -19,7 +19,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # ═══════════════════════════════════════════════════════════════════════════════
 # BANNER
 # ═══════════════════════════════════════════════════════════════════════════════
-clear
+clear 2>/dev/null || true
 echo ""
 echo -e "${CYAN}╔════════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${CYAN}║        ${BOLD}SpecKit - Salesforce Development Accelerator${NC}${CYAN}           ║${NC}"
@@ -58,10 +58,28 @@ read -p "Proceed with installation? (Y/n): " CONFIRM
 # ═══════════════════════════════════════════════════════════════════════════════
 echo ""
 echo -e "${BLUE}📦 Installing SpecKit components...${NC}"
-cp -r "$SCRIPT_DIR/.specify" "$TARGET_DIR/" && echo -e "  ${GREEN}✓${NC} SpecKit core"
-mkdir -p "$TARGET_DIR/.cursor" && cp -r "$SCRIPT_DIR/.cursor/skills" "$TARGET_DIR/.cursor/" && echo -e "  ${GREEN}✓${NC} Agent skills (12 commands)"
-cp -r "$SCRIPT_DIR/docs" "$TARGET_DIR/" && echo -e "  ${GREEN}✓${NC} Progress dashboard"
-mkdir -p "$TARGET_DIR/specs" && echo -e "  ${GREEN}✓${NC} Specs directory"
+
+# Each copy is checked independently so failures are loud (not hidden by && chains)
+cp -r "$SCRIPT_DIR/.specify" "$TARGET_DIR/"
+echo -e "  ${GREEN}✓${NC} SpecKit core (.specify)"
+
+# Agent skills — critical. Verify they actually landed.
+mkdir -p "$TARGET_DIR/.cursor"
+cp -r "$SCRIPT_DIR/.cursor/skills" "$TARGET_DIR/.cursor/"
+SKILL_COUNT=$(ls "$TARGET_DIR/.cursor/skills" 2>/dev/null | wc -l | tr -d ' ')
+if [ "$SKILL_COUNT" -lt 1 ]; then
+    echo -e "  ${RED}✗ ERROR: Agent skills failed to copy into .cursor/skills${NC}"
+    echo -e "  ${YELLOW}If you are running this inside an AI agent/sandbox, run it in a normal terminal instead.${NC}"
+    exit 1
+fi
+echo -e "  ${GREEN}✓${NC} Agent skills ($SKILL_COUNT commands)"
+
+cp -r "$SCRIPT_DIR/docs" "$TARGET_DIR/"
+echo -e "  ${GREEN}✓${NC} Progress dashboard"
+
+mkdir -p "$TARGET_DIR/specs"
+echo -e "  ${GREEN}✓${NC} Specs directory"
+
 cp "$SCRIPT_DIR/sample-constitution.md" "$TARGET_DIR/" 2>/dev/null && echo -e "  ${GREEN}✓${NC} Sample constitution"
 find "$TARGET_DIR/.specify/scripts" -name "*.sh" -exec chmod +x {} \; 2>/dev/null
 echo -e "  ${GREEN}✓${NC} Files installed"
