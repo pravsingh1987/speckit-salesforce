@@ -15,52 +15,44 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 
 ## Quick Install
 
-### Method 1: Symlink Install (Recommended)
+**One command. Works in Cursor's terminal OR macOS Terminal — your choice.**
 
-**One-time setup** — clone once, use in ALL projects:
+Salesforce Internal:
 
 ```bash
-# 1. Clone toolkit to a permanent location
-cd ~/code  # or wherever you keep repos
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-# OR: git clone https://github.com/pravsingh1987/speckit-salesforce.git
-
-# 2. Symlink skills to Cursor
-ln -sf "$PWD/speckit-salesforce/.cursor/skills" "$HOME/.cursor/skills"
-
-# 3. Verify
-ls ~/.cursor/skills/speckit-specify/SKILL.md
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; ln -sf ~/.speckit-salesforce/.cursor/skills ~/.cursor/skills && echo "✅ SpecKit installed — run /speckit-init in any project"
 ```
 
-Then in **any** Salesforce project, open Cursor and run:
+External / GitHub:
+
+```bash
+git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; ln -sf ~/.speckit-salesforce/.cursor/skills ~/.cursor/skills && echo "✅ SpecKit installed — run /speckit-init in any project"
+```
+
+Then open **any** Salesforce project in Cursor and run:
+
 ```
 /speckit-init
 ```
 
-### Method 2: Per-Project Install
+That's it. All `/speckit-*` commands now work in every project.
 
-For self-contained projects (copies files into each project):
+> **Why this works everywhere:** The command clones to `~/.speckit-salesforce` (outside any project) and symlinks the skills into Cursor. Because *you* run it interactively, there's no sandbox — it works identically in Cursor's integrated terminal and macOS Terminal.
+
+### To Update Later
 
 ```bash
-# In your project directory
-cd ~/my-salesforce-project
-
-# Clone and install
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git .speckit-src
-bash .speckit-src/install.sh .
-rm -rf .speckit-src  # optional cleanup
+cd ~/.speckit-salesforce && git pull
 ```
 
-### Method 3: pip Install
+Skills update instantly — no reinstall needed.
+
+### Alternative: pip Install
 
 ```bash
 pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
 speckit init ./my-project
 ```
-
-### After Installation
-
-Open your project in Cursor - all `/speckit-*` commands now work!
 
 See `INSTALLATION_GUIDE.md` for complete setup instructions.
 

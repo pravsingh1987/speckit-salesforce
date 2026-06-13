@@ -48,51 +48,23 @@ SpecKit Salesforce Edition is a universal development accelerator for any Salesf
 
 ## Installation Steps
 
-Choose the method that best fits your workflow:
+### Recommended: One-Command Install
 
-| Method | Best For | Requires Terminal? |
-|--------|----------|-------------------|
-| **Symlink** | Multiple projects, fast setup | Yes (one-time) |
-| **CLI** | Easy install, no git needed | Yes |
-| **Per-Project** | Self-contained, isolated | Yes |
+**This single command works in BOTH Cursor's integrated terminal AND macOS Terminal.**
 
----
-
-### Method 1: Symlink Installation (Recommended for Multiple Projects)
-
-**One-time setup** — clone once, use in ALL projects. Skills are shared via symlink.
-
-**Step 1: Clone the Toolkit**
-
-Open **macOS Terminal** (not Cursor) and run:
+Salesforce Internal:
 
 ```bash
-cd ~/code  # or wherever you keep repos
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-# OR for external users:
-# git clone https://github.com/pravsingh1987/speckit-salesforce.git
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; ln -sf ~/.speckit-salesforce/.cursor/skills ~/.cursor/skills && echo "✅ SpecKit installed — run /speckit-init in any project"
 ```
 
-**Step 2: Symlink Skills to Cursor**
+External / GitHub:
 
 ```bash
-# Backup existing skills if any
-[ -e ~/.cursor/skills ] && mv ~/.cursor/skills ~/.cursor/skills.bak
-
-# Create symlink (run from the directory where you cloned)
-ln -sf "$PWD/speckit-salesforce/.cursor/skills" "$HOME/.cursor/skills"
+git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; ln -sf ~/.speckit-salesforce/.cursor/skills ~/.cursor/skills && echo "✅ SpecKit installed — run /speckit-init in any project"
 ```
 
-**Step 3: Verify Installation**
-
-```bash
-ls ~/.cursor/skills/speckit-specify/SKILL.md
-# Should show the file path
-```
-
-**Step 4: Initialize Any Project**
-
-Now open **any** Salesforce project in Cursor and run:
+Then open **any** Salesforce project in Cursor and run:
 
 ```
 /speckit-init
@@ -100,17 +72,29 @@ Now open **any** Salesforce project in Cursor and run:
 
 This bootstraps `.specify/`, `docs/`, and `specs/` in your project.
 
-**Benefits of Symlink Method:**
-- Clone once, use everywhere
-- Updates to toolkit are instantly available
-- No duplication of skill files
-- Works in Cursor (no sandbox issues after initial setup)
+#### Why This Works in Cursor's Terminal
+
+A common misconception is that you must use macOS Terminal. **That's not true for commands YOU run.**
+
+- Cursor's sandbox only restricts the **AI agent's** automated commands.
+- When **you** paste a command into a terminal (Cursor's or macOS), it runs as a normal shell — **no sandbox**.
+- The command clones to `~/.speckit-salesforce` (outside the project) and symlinks skills into Cursor.
+
+So this works identically whether you run it in Cursor or macOS Terminal. Pick whichever is open.
+
+#### To Update Later
+
+```bash
+cd ~/.speckit-salesforce && git pull
+```
+
+Skills update instantly across all projects — no reinstall needed.
 
 ---
 
-### Method 2: CLI Installation
+### Alternative: CLI Installation (pip/uv)
 
-The CLI method doesn't require git clone and works directly in any terminal:
+If you prefer a Python CLI that doesn't use symlinks:
 
 **Step 1: Install the CLI**
 
@@ -151,25 +135,18 @@ Skip to [How to Use SpecKit](#how-to-use-speckit) section.
 
 ---
 
-### Method 3: Per-Project Installation (Git Clone)
+### Alternative: Per-Project Installation (Self-Contained)
 
-> ⚠️ **IMPORTANT: Use macOS Terminal, NOT Cursor Terminal**
-> 
-> Cursor's sandbox blocks `git clone` for security reasons (to prevent malicious git hooks).
-> You MUST run the clone command in your **macOS Terminal app** or **iTerm**, not in Cursor's integrated terminal.
+Use this if you want SpecKit files copied directly into a single project (no symlink). Works in any terminal.
 
 **Step 1: Clone the Package**
 
-**For Salesforce Internal Users (Recommended):**
-
-Open **macOS Terminal** and run:
+Salesforce Internal:
 ```bash
 git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
 ```
 
-**For External Users:**
-
-Open **macOS Terminal** and run:
+External:
 ```bash
 git clone https://github.com/pravsingh1987/speckit-salesforce.git
 ```
@@ -947,22 +924,13 @@ MEDIUM FINDINGS:
 
 ## Troubleshooting
 
-### Git Clone Blocked in Cursor
+### "Did the agent say I can't clone in Cursor?"
 
-**Error:** "The sandbox is blocking git clone" or "Unable to create .git directory"
+The install command works in **both** Cursor's integrated terminal and macOS Terminal.
 
-**Cause:** Cursor's sandbox blocks `git clone` for security (prevents malicious git hooks).
+The sandbox only restricts commands the **AI agent** runs automatically — it does **not** restrict commands **you** type into a terminal. Paste the one-command install into whichever terminal is open and it will work.
 
-**Solution:** Run `git clone` in **macOS Terminal**, not Cursor:
-```bash
-# Open Terminal.app (not Cursor)
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-```
-
-After cloning, you can open the folder in Cursor:
-```bash
-cursor /path/to/speckit-salesforce
-```
+If you ever see a sandbox error, it's because the *agent* tried to run it for you. Just run the command yourself in the terminal.
 
 ### Installation Problems
 
