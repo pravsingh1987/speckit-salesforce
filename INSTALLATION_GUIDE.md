@@ -46,12 +46,57 @@ SpecKit Salesforce Edition is a universal development accelerator for any Salesf
 
 ## Installation Steps
 
-### Step 1: Clone the Package
+### Method 1: CLI Installation (Recommended)
+
+The CLI method doesn't require git clone and works directly in any terminal:
+
+**Step 1: Install the CLI**
+
+Using uv (fastest):
+```bash
+uv tool install speckit-salesforce --from git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+```
+
+Using pip:
+```bash
+pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+```
+
+Using pipx:
+```bash
+pipx install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+```
+
+**Step 2: Initialize Your Project**
+
+```bash
+# Create and initialize a new project
+speckit init ./my-salesforce-project
+
+# Or initialize in current directory
+speckit init .
+```
+
+The CLI will guide you through the 5-step configuration wizard.
+
+**Step 3: Open in Cursor**
+
+```bash
+cursor ./my-salesforce-project
+```
+
+Skip to [How to Use SpecKit](#how-to-use-speckit) section.
+
+---
+
+### Method 2: Manual Installation (Git Clone)
 
 > ⚠️ **IMPORTANT: Use macOS Terminal, NOT Cursor Terminal**
 > 
 > Cursor's sandbox blocks `git clone` for security reasons (to prevent malicious git hooks).
 > You MUST run the clone command in your **macOS Terminal app** or **iTerm**, not in Cursor's integrated terminal.
+
+**Step 1: Clone the Package**
 
 **For Salesforce Internal Users (Recommended):**
 

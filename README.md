@@ -15,28 +15,47 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 
 ## Quick Install
 
-> ⚠️ **IMPORTANT**: Run `git clone` in **macOS Terminal**, NOT in Cursor.
-> Cursor's sandbox blocks git clone for security reasons.
+### Method 1: CLI Installation (Recommended)
 
-### For Salesforce Internal Users (git.soma)
+No git clone needed! Install via pip/uv and run the guided setup:
 
-Open **macOS Terminal** (not Cursor) and run:
+**Using uv (Fastest):**
 ```bash
-# Clone from Salesforce internal GitHub
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+# Install CLI from Salesforce internal
+uv tool install speckit-salesforce --from git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
 
-# Install to your project
+# Initialize your project
+speckit init ./my-project
+```
+
+**Using pip:**
+```bash
+# Install CLI
+pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+
+# Initialize your project
+speckit init ./my-project
+```
+
+**Using pipx:**
+```bash
+pipx install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+speckit init ./my-project
+```
+
+### Method 2: Manual Installation (Git Clone)
+
+> ⚠️ **Note**: Run `git clone` in **macOS Terminal**, NOT in Cursor (sandbox blocks it).
+
+**For Salesforce Internal Users:**
+```bash
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
 bash speckit-salesforce/install.sh /path/to/your-project
 ```
 
-### For External Users (github.com)
-
-Open **macOS Terminal** (not Cursor) and run:
+**For External Users:**
 ```bash
-# Clone from public GitHub
 git clone https://github.com/pravsingh1987/speckit-salesforce.git
-
-# Install to your project
 bash speckit-salesforce/install.sh /path/to/your-project
 ```
 
