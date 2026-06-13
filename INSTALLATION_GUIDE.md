@@ -1060,6 +1060,77 @@ The `.specify/templates/` folder contains templates that define output formats.
 
 ---
 
+## Updating SpecKit
+
+### Update the SpecKit Source Package
+
+To get the latest version of SpecKit:
+
+```bash
+cd /path/to/speckit-salesforce
+git pull origin main
+```
+
+### Update an Installed Project
+
+Use the `update.sh` script to update a project while preserving your configuration:
+
+```bash
+bash /path/to/speckit-salesforce/update.sh /path/to/your-project
+```
+
+**Example:**
+```bash
+bash ~/speckit-salesforce/update.sh ~/my-salesforce-project
+```
+
+### What the Update Script Does
+
+1. **Pulls latest** from GitHub (optional)
+2. **Creates backup** of your configuration
+3. **Lets you choose** what to update:
+   - All components (recommended)
+   - Agent skills only
+   - Templates only
+   - Dashboard only
+   - Memory templates only
+   - Custom selection
+4. **Preserves** your `progress-tracker.json` and constitution customizations
+5. **Shows backup location** in case you need to restore
+
+### Update Options
+
+| Option | What It Updates |
+|--------|----------------|
+| **All components** | Skills, templates, dashboard, scripts |
+| **Skills only** | `.cursor/skills/` (12 commands) |
+| **Templates only** | `.specify/templates/` |
+| **Dashboard only** | `docs/progress-dashboard.html` |
+| **Memory templates** | `.specify/memory/` (overwrites customizations) |
+
+### Manual Update (Alternative)
+
+If you prefer to update manually:
+
+```bash
+# Update skills only
+cp -r /path/to/speckit-salesforce/.cursor/skills/* /path/to/your-project/.cursor/skills/
+
+# Update templates only
+cp -r /path/to/speckit-salesforce/.specify/templates/* /path/to/your-project/.specify/templates/
+
+# Update dashboard only
+cp /path/to/speckit-salesforce/docs/progress-dashboard.html /path/to/your-project/docs/
+```
+
+### After Updating
+
+1. **Restart Cursor** to load updated skills
+2. **Review changes** if you updated memory files
+3. **Check backup** at `.speckit-backup-YYYYMMDD-HHMMSS/` if needed
+
+---
+
 ## Version Information
 
 | Component | Version |
