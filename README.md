@@ -15,8 +15,12 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 
 ## Quick Install
 
+> ⚠️ **IMPORTANT**: Run `git clone` in **macOS Terminal**, NOT in Cursor.
+> Cursor's sandbox blocks git clone for security reasons.
+
 ### For Salesforce Internal Users (git.soma)
 
+Open **macOS Terminal** (not Cursor) and run:
 ```bash
 # Clone from Salesforce internal GitHub
 git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
@@ -27,6 +31,7 @@ bash speckit-salesforce/install.sh /path/to/your-project
 
 ### For External Users (github.com)
 
+Open **macOS Terminal** (not Cursor) and run:
 ```bash
 # Clone from public GitHub
 git clone https://github.com/pravsingh1987/speckit-salesforce.git

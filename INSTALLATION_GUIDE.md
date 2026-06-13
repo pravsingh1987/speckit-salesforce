@@ -48,12 +48,21 @@ SpecKit Salesforce Edition is a universal development accelerator for any Salesf
 
 ### Step 1: Clone the Package
 
+> ⚠️ **IMPORTANT: Use macOS Terminal, NOT Cursor Terminal**
+> 
+> Cursor's sandbox blocks `git clone` for security reasons (to prevent malicious git hooks).
+> You MUST run the clone command in your **macOS Terminal app** or **iTerm**, not in Cursor's integrated terminal.
+
 **For Salesforce Internal Users (Recommended):**
+
+Open **macOS Terminal** and run:
 ```bash
 git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
 ```
 
 **For External Users:**
+
+Open **macOS Terminal** and run:
 ```bash
 git clone https://github.com/pravsingh1987/speckit-salesforce.git
 ```
@@ -758,6 +767,23 @@ MEDIUM FINDINGS:
 ---
 
 ## Troubleshooting
+
+### Git Clone Blocked in Cursor
+
+**Error:** "The sandbox is blocking git clone" or "Unable to create .git directory"
+
+**Cause:** Cursor's sandbox blocks `git clone` for security (prevents malicious git hooks).
+
+**Solution:** Run `git clone` in **macOS Terminal**, not Cursor:
+```bash
+# Open Terminal.app (not Cursor)
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+```
+
+After cloning, you can open the folder in Cursor:
+```bash
+cursor /path/to/speckit-salesforce
+```
 
 ### Installation Problems
 

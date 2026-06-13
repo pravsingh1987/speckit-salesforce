@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "speckit-salesforce"
+version = "1.0.0"
+description = "SpecKit Salesforce - Development Accelerator for Salesforce Projects"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    { name = "Praveen Singh", email = "praveensingh@salesforce.com" }
+]
+keywords = ["salesforce", "speckit", "development", "accelerator", "cursor"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Code Generators",
+]
+dependencies = [
+    "click>=8.0.0",
+    "rich>=13.0.0",
+]
+
+[project.scripts]
+speckit = "speckit_salesforce.cli:main"
+speckit-salesforce = "speckit_salesforce.cli:main"
+
+[project.urls]
+Homepage = "https://git.soma.salesforce.com/praveensingh/speckit-salesforce"
+Documentation = "https://git.soma.salesforce.com/praveensingh/speckit-salesforce"
+Repository = "https://git.soma.salesforce.com/praveensingh/speckit-salesforce"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/speckit_salesforce"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/assets",
+]
