@@ -97,6 +97,18 @@ Files in `.specify/memory/` are **automatically consulted** by all commands:
 
 ## Usage Workflow
 
+### Recommended Order
+
+```
+1. /speckit-specify     → Create spec from requirements
+2. /speckit-wireframe   → Generate wireframes (get sign-off!)
+3. /speckit-analyze     → Validate spec completeness  
+4. /speckit-plan        → Generate technical plan
+5. /speckit-tasks       → Break into tasks
+6. /speckit-implement   → Build the solution
+7. /speckit-dashboard   → Track progress
+```
+
 ### 1. Initialize a New Feature
 
 ```
@@ -113,23 +125,27 @@ Core objects: Salesforce objects involved
 - Discussion notes
 ```
 
-### 2. Generate Plan & Tasks
-
-```
-/speckit-plan    # Creates research, data model, Apex contracts
-/speckit-tasks   # Breaks down into implementable tasks
-```
-
-### 3. Create Wireframes (Optional)
+### 2. Generate Wireframes (Recommended)
 
 ```
 /speckit-wireframe  # Generates SLDS-aligned visual mockups
 ```
 
-### 4. Validate Before Implementation
+Creates `wireframes.md` with screen inventory, Figma links, and sign-off checklist.
+
+> ⚠️ **Best Practice**: Get stakeholder sign-off on wireframes before proceeding to plan.
+
+### 3. Validate Specification
 
 ```
 /speckit-analyze  # Returns PASS/FAIL with recommendations
+```
+
+### 4. Generate Plan & Tasks
+
+```
+/speckit-plan    # Creates research, data model, Apex contracts
+/speckit-tasks   # Breaks down into implementable tasks
 ```
 
 ### 5. Implement

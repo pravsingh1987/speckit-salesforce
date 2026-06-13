@@ -499,7 +499,16 @@ Returns:
 
 ---
 
-## Wireframes
+## Wireframes & Visual Sign-off
+
+### Why Wireframes?
+
+Wireframes bridge the gap between specification and implementation:
+
+- **Stakeholder Alignment** - Visual review before coding starts
+- **Reduce Rework** - Catch UX issues early
+- **Clear Targets** - Developers know exactly what to build
+- **Documentation** - Visual record of approved design
 
 ### Generating Wireframes
 
@@ -507,9 +516,28 @@ Returns:
 /speckit-wireframe
 ```
 
-### What You Get
+**Prerequisites:**
+- Spec exists at `specs/<feature>/spec.md`
+- Spec includes **Panel / Screen Content** section
+- Spec includes **Navigation & Interactions** section
+- Figma MCP is available and authenticated (optional)
 
-The wireframe skill generates SLDS-aligned mockups:
+**Output:**
+- `wireframes.md` - Screen inventory with links/mockups
+- Figma frames for each screen/panel (if MCP available)
+- Sign-off checklist
+
+### Wireframe Types for Salesforce
+
+| Type | Use Case | SLDS Pattern |
+|------|----------|--------------|
+| **Record Page** | Account/Contact/Opportunity views | Header + sidebar + tabs |
+| **List View** | Related lists, search results | Filters + datatable |
+| **Modal/Dialog** | Quick create, confirmations | Form + action buttons |
+| **Dashboard** | KPI views, roll-ups | Cards + charts + drill-down |
+| **Experience Cloud** | Portal pages, communities | Custom themes + navigation |
+
+### Example Output (ASCII)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -533,11 +561,55 @@ LWC: portalDashboard
 SLDS: slds-card, slds-grid, slds-icon
 ```
 
+### Example wireframes.md Structure
+
+```markdown
+# Wireframes: Customer Portal Dashboard
+
+**Generated**: 2026-06-13
+**Spec**: specs/customer-portal/spec.md
+**Status**: 🟡 Pending Sign-off
+
+## Screen Inventory
+
+| Screen | Figma Link | User Story | Status |
+|--------|------------|------------|--------|
+| Portal Home | [Link] | US1 | ⏳ Pending |
+| Case List | [Link] | US2 | ⏳ Pending |
+| Case Detail | [Link] | US3 | ⏳ Pending |
+
+## Sign-off Checklist
+
+- [ ] All screens reviewed by Product Owner
+- [ ] Field placements approved
+- [ ] Navigation flow approved
+- [ ] Mobile responsiveness reviewed
+- [ ] Accessibility considerations noted
+
+## Sign-off
+
+**Approved for Implementation**: ☐ Yes / ☐ No
+**Approved By**: _______________
+**Date**: _______________
+```
+
+### Sign-off Workflow
+
+1. **Generate**: Run `/speckit-wireframe` after spec is complete
+2. **Share**: Send Figma links or wireframes.md to stakeholders
+3. **Review**: Walk through each screen in a meeting
+4. **Feedback**: Log changes in wireframes.md feedback table
+5. **Iterate**: Regenerate screens if needed
+6. **Approve**: Get formal sign-off before `/speckit-plan`
+
+> ⚠️ **Best Practice**: Get wireframe sign-off before generating the plan. This prevents building the wrong thing.
+
 ### Using Wireframes
 
-1. **Customer Sign-off**: Share wireframes.md for approval
-2. **Development Reference**: Use as UI specification
-3. **Jira Attachment**: Link wireframes to stories
+1. **Customer Sign-off**: Share wireframes.md for approval before implementation
+2. **Development Reference**: Use as UI specification for developers
+3. **Jira Attachment**: Link wireframes to stories for context
+4. **Design Review**: Compare implementation against approved mockups
 
 ---
 
