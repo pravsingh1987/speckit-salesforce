@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "hooks": [
+    {
+      "event": "afterShellExecution",
+      "type": "prompt",
+      "path": ".cursor/hooks/dashboard-reminder.md",
+      "matchers": {
+        "commands": ["git commit", "git push"]
+      },
+      "description": "Prompt to update dashboard after git commits"
+    }
+  ]
+}

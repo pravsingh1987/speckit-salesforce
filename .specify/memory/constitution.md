@@ -209,6 +209,21 @@ governor limits considered. **SOQL**: No `SELECT *`; indexed fields in `WHERE` c
 - `/speckit-analyze` MUST be run after tasks are generated to catch constitution
   violations before code is written.
 
+## XII. Progress Tracking (Mandatory)
+
+**After completing any user story implementation:**
+
+1. **Update Dashboard** - Run `/speckit-dashboard` or manually update `docs/progress-tracker.json`
+2. **Mark Story Built** - Set `built: true`, `built_by`, and `built_date` for the story
+3. **Record Tokens** - Add a session entry to `token_consumption.by_epic[].sessions`
+4. **Commit Tracker** - Commit the updated `progress-tracker.json` with the code changes
+5. **Push to Remote** - Ensure dashboard updates are visible to all contributors
+
+**The progress dashboard is the single source of truth for project status.**
+
+Skipping dashboard updates is a constitution violation. If work is completed but not
+tracked, it creates confusion for project managers, stakeholders, and other contributors.
+
 ## Governance
 
 This constitution supersedes all other development practices within this project.
@@ -231,4 +246,4 @@ The authoritative source for detailed implementation rules is
 `specify-rules.mdc` governs on implementation specifics; this constitution governs on
 architecture and process gates.
 
-**Version**: 2.1.0 | **Ratified**: 2026-06-11 | **Last Amended**: 2026-06-11
+**Version**: 2.2.0 | **Ratified**: 2026-06-11 | **Last Amended**: 2026-06-13
