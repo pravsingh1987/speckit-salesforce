@@ -1,12 +1,49 @@
 ---
 name: speckit-dashboard
 description: Generate and manage the project progress dashboard with Jira sync, token tracking, and GitHub Pages publishing.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # SpecKit Dashboard
 
 Generate and manage the project progress tracking dashboard.
+
+## ⚠️ Single source of truth: `progress-tracker.json`
+
+The dashboard (`progress-dashboard.html`) is **100% data-driven** — every value (summary
+stats, charts, contributors, epics, stories, token sessions) is rendered at runtime from
+JSON. **Never hand-edit numbers in the HTML.** Only edit `docs/progress-tracker.json`.
+
+The HTML reads data in two ways:
+1. **Live:** `fetch('./progress-tracker.json')` — used on GitHub Pages / any http server.
+2. **Offline fallback:** an embedded `<script id="embedded-data">` JSON island — used when
+   the file is opened directly via `file://` (where `fetch` is blocked by the browser).
+
+### MANDATORY final step after ANY tracker change
+
+Whenever you modify `docs/progress-tracker.json` (sync from Jira, mark a story built, add a
+contributor, log token sessions, add an epic), you MUST regenerate the embedded fallback so
+the offline view never goes stale:
+
+```bash
+python3 .specify/scripts/sync-dashboard-data.py
+```
+
+This copies `progress-tracker.json` into the embedded island of every
+`progress-dashboard.html` in the project (skips `.sk-test`). Do this **before** committing.
+Do not consider a dashboard update complete until this script has run.
+
+### One-step publish (sync + commit + push)
+
+To sync the embedded data and push in a single step, use the publish helper:
+
+```bash
+bash .specify/scripts/publish-dashboard.sh ["optional commit message"]
+```
+
+It runs `sync-dashboard-data.py`, stages every `progress-tracker.json` /
+`progress-dashboard.html`, commits, and pushes. On GitHub Pages the dashboard refreshes
+automatically after the push.
 
 ## Commands
 
@@ -127,9 +164,13 @@ The agent will:
 1. Query Jira for all epics and stories
 2. Extract status, priority, and metadata
 3. Calculate token consumption totals
-4. Generate/update `progress-dashboard.html`
-5. Update `progress-tracker.json`
-6. Commit and push to GitHub
+4. Update `progress-tracker.json` (the only file that holds data)
+5. Run `python3 .specify/scripts/sync-dashboard-data.py` to refresh the embedded fallback
+6. Commit and push to GitHub (`progress-tracker.json` + `progress-dashboard.html`)
+
+> Steps 5 + 6 can be done in one shot with `bash .specify/scripts/publish-dashboard.sh`.
+> Step 4 alone is enough for the live GitHub Pages dashboard. Step 5 is required so the
+> dashboard also shows correct data when opened locally as a file.
 
 ## Customization
 
@@ -171,3 +212,10 @@ The dashboard uses CSS variables. Override in the HTML:
 ### Dashboard Not Updating
 - Run `/speckit-dashboard sync` to force refresh
 - Check `progress-tracker.json` for data integrity
+- **Opened as a file and still see old numbers?** The embedded fallback is stale. Run
+  `python3 .specify/scripts/sync-dashboard-data.py`, then hard-refresh (Cmd+Shift+R).
+- **Viewing on GitHub Pages and see old numbers?** Hard-refresh; Pages caches briefly.
+
+### Values look hardcoded / won't change
+- They are not. All display values render from `progress-tracker.json`. If you edited the
+  HTML directly, your changes will be overwritten on load — edit the JSON instead.

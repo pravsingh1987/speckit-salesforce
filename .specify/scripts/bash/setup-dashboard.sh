@@ -40,6 +40,19 @@ else
     echo -e "   Run: /speckit-dashboard to generate the full dashboard"
 fi
 
+# Sync the embedded offline-fallback data from progress-tracker.json (single source of truth).
+# Keeps the dashboard correct even when opened directly via file://.
+SYNC_SCRIPT="$SPECKIT_ROOT/scripts/sync-dashboard-data.py"
+if [ -f "$DOCS_DIR/progress-dashboard.html" ] && [ -f "$DOCS_DIR/progress-tracker.json" ] && [ -f "$SYNC_SCRIPT" ]; then
+    if command -v python3 >/dev/null 2>&1; then
+        ( cd "$PROJECT_ROOT/.." && python3 "$SYNC_SCRIPT" ) \
+            && echo -e "${GREEN}✅ Synced embedded dashboard data from progress-tracker.json${NC}" \
+            || echo -e "${YELLOW}⚠️  Could not sync embedded dashboard data (run python3 .specify/scripts/sync-dashboard-data.py manually)${NC}"
+    else
+        echo -e "${YELLOW}⚠️  python3 not found — skipping embedded-data sync${NC}"
+    fi
+fi
+
 # Create README for docs folder
 if [ ! -f "$DOCS_DIR/README.md" ]; then
     cat > "$DOCS_DIR/README.md" << 'EOF'
@@ -73,6 +86,13 @@ Tell the agent:
 - `Mark PR-XXX as built` - Update specific story
 - `Add contributor John` - Add team member
 
+## Updating the data (single source of truth)
+
+All values render from `progress-tracker.json`. Never hand-edit the HTML.
+
+- Refresh offline fallback:  `python3 .specify/scripts/sync-dashboard-data.py`
+- Sync + commit + push:      `bash .specify/scripts/publish-dashboard.sh "message"`
+
 EOF
     echo -e "${GREEN}✅ Created docs/README.md${NC}"
 fi
@@ -84,4 +104,5 @@ echo "Next steps:"
 echo "  1. Run /speckit-dashboard to generate the full HTML dashboard"
 echo "  2. Configure GitHub Pages in repository settings"
 echo "  3. Set up Jira integration (see docs/jira-integration.md)"
+echo "  4. Publish updates anytime with: bash .specify/scripts/publish-dashboard.sh"
 echo ""
