@@ -5,16 +5,18 @@
 1. [Overview](#overview)
 2. [Prerequisites](#prerequisites)
 3. [Installation Steps](#installation-steps)
-4. [Required Information](#required-information)
-5. [Post-Installation Setup](#post-installation-setup)
-6. [How to Use SpecKit](#how-to-use-speckit)
-7. [Available Commands](#available-commands)
-8. [Creating Your First Specification](#creating-your-first-specification)
-9. [Wireframes](#wireframes)
-10. [Dashboard & Tracking](#dashboard--tracking)
-11. [Jira Integration](#jira-integration)
-12. [Adding Team Members](#adding-team-members)
-13. [Troubleshooting](#troubleshooting)
+   - [Method 1: Symlink Installation](#method-1-symlink-installation-recommended-for-multiple-projects)
+   - [Method 2: CLI Installation](#method-2-cli-installation)
+   - [Method 3: Per-Project Installation](#method-3-per-project-installation-git-clone)
+4. [Post-Installation Setup](#post-installation-setup)
+5. [How to Use SpecKit](#how-to-use-speckit)
+6. [Available Commands](#available-commands)
+7. [Creating Your First Specification](#creating-your-first-specification)
+8. [Wireframes & Visual Sign-off](#wireframes--visual-sign-off)
+9. [Dashboard & Tracking](#dashboard--tracking)
+10. [Jira Integration](#jira-integration)
+11. [Adding Team Members](#adding-team-members)
+12. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -46,7 +48,67 @@ SpecKit Salesforce Edition is a universal development accelerator for any Salesf
 
 ## Installation Steps
 
-### Method 1: CLI Installation (Recommended)
+Choose the method that best fits your workflow:
+
+| Method | Best For | Requires Terminal? |
+|--------|----------|-------------------|
+| **Symlink** | Multiple projects, fast setup | Yes (one-time) |
+| **CLI** | Easy install, no git needed | Yes |
+| **Per-Project** | Self-contained, isolated | Yes |
+
+---
+
+### Method 1: Symlink Installation (Recommended for Multiple Projects)
+
+**One-time setup** — clone once, use in ALL projects. Skills are shared via symlink.
+
+**Step 1: Clone the Toolkit**
+
+Open **macOS Terminal** (not Cursor) and run:
+
+```bash
+cd ~/code  # or wherever you keep repos
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+# OR for external users:
+# git clone https://github.com/pravsingh1987/speckit-salesforce.git
+```
+
+**Step 2: Symlink Skills to Cursor**
+
+```bash
+# Backup existing skills if any
+[ -e ~/.cursor/skills ] && mv ~/.cursor/skills ~/.cursor/skills.bak
+
+# Create symlink (run from the directory where you cloned)
+ln -sf "$PWD/speckit-salesforce/.cursor/skills" "$HOME/.cursor/skills"
+```
+
+**Step 3: Verify Installation**
+
+```bash
+ls ~/.cursor/skills/speckit-specify/SKILL.md
+# Should show the file path
+```
+
+**Step 4: Initialize Any Project**
+
+Now open **any** Salesforce project in Cursor and run:
+
+```
+/speckit-init
+```
+
+This bootstraps `.specify/`, `docs/`, and `specs/` in your project.
+
+**Benefits of Symlink Method:**
+- Clone once, use everywhere
+- Updates to toolkit are instantly available
+- No duplication of skill files
+- Works in Cursor (no sandbox issues after initial setup)
+
+---
+
+### Method 2: CLI Installation
 
 The CLI method doesn't require git clone and works directly in any terminal:
 
@@ -89,7 +151,7 @@ Skip to [How to Use SpecKit](#how-to-use-speckit) section.
 
 ---
 
-### Method 2: Manual Installation (Git Clone)
+### Method 3: Per-Project Installation (Git Clone)
 
 > ⚠️ **IMPORTANT: Use macOS Terminal, NOT Cursor Terminal**
 > 
