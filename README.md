@@ -15,49 +15,33 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 
 ## Quick Install
 
-### Method 1: CLI Installation (Recommended)
+> ⚠️ **Run in macOS Terminal** - Cursor's sandbox blocks installation for security.
+> This is a one-time setup (30 seconds). After that, everything works inside Cursor.
 
-No git clone needed! Install via pip/uv and run the guided setup:
+### One-Liner Install (Salesforce Internal)
 
-**Using uv (Fastest):**
+Open **Terminal** (Cmd+Space → type "Terminal") and paste:
+
 ```bash
-# Install CLI from Salesforce internal
-uv tool install speckit-salesforce --from git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-
-# Initialize your project
-speckit init ./my-project
+cd ~ && git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git .speckit-sf && bash .speckit-sf/install.sh
 ```
 
-**Using pip:**
+### One-Liner Install (External/GitHub)
+
 ```bash
-# Install CLI
+cd ~ && git clone https://github.com/pravsingh1987/speckit-salesforce.git .speckit-sf && bash .speckit-sf/install.sh
+```
+
+### Alternative: pip Install
+
+```bash
 pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-
-# Initialize your project
 speckit init ./my-project
 ```
 
-**Using pipx:**
-```bash
-pipx install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-speckit init ./my-project
-```
+### After Installation
 
-### Method 2: Manual Installation (Git Clone)
-
-> ⚠️ **Note**: Run `git clone` in **macOS Terminal**, NOT in Cursor (sandbox blocks it).
-
-**For Salesforce Internal Users:**
-```bash
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-bash speckit-salesforce/install.sh /path/to/your-project
-```
-
-**For External Users:**
-```bash
-git clone https://github.com/pravsingh1987/speckit-salesforce.git
-bash speckit-salesforce/install.sh /path/to/your-project
-```
+Open your project in Cursor - all `/speckit-*` commands now work!
 
 See `INSTALLATION_GUIDE.md` for complete setup instructions.
 
