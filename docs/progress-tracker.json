@@ -15,7 +15,8 @@
     "stories_in_review": 0,
     "stories_pending": 0,
     "completion_percentage": 0,
-    "total_tokens": 0
+    "total_tokens": 0,
+    "total_test_cases": 0
   },
   "contributors": [],
   "token_consumption": {
@@ -36,5 +37,24 @@
       "flexipages": []
     }
   },
-  "epics": []
+  "epics": [],
+  "test_cases": {
+    "generated": "2026-06-14T16:59:09+05:30",
+    "note": "Counts derived live from test-cases.md and emitted Apex/Jest files; tokens from test-tagged sessions. Not hardcoded.",
+    "totals": {
+      "manual": 0,
+      "automated": 0,
+      "total": 0,
+      "tokens": 0,
+      "epics_covered": 0,
+      "epics_total": 0
+    },
+    "automated_suite": {
+      "apex_test_classes": 0,
+      "apex_test_methods": 0,
+      "jest_specs": 0,
+      "jest_tests": 0
+    },
+    "by_epic": []
+  }
 }

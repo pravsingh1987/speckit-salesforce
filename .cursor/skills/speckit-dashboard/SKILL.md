@@ -33,6 +33,28 @@ This copies `progress-tracker.json` into the embedded island of every
 `progress-dashboard.html` in the project (skips `.sk-test`). Do this **before** committing.
 Do not consider a dashboard update complete until this script has run.
 
+### Fully automatic: sync on commit (recommended)
+
+Token/progress data lives **only** in `progress-tracker.json` and is edited locally as you
+work. A git `pre-commit` hook then keeps the shared dashboard in sync with zero manual steps:
+
+- On every `git commit`, the hook runs `sync-dashboard-data.py` and folds the refreshed
+  `progress-dashboard.html` into the **same commit**.
+- `git push` then shares it — teammates see it on their next page refresh (GitHub Pages
+  live-fetches `progress-tracker.json`).
+
+Enable once per clone (also done automatically by `setup-dashboard.sh`):
+
+```bash
+git config core.hooksPath .githooks
+```
+
+The hook lives at `.githooks/pre-commit` (committed, so it travels with the repo) and is
+non-fatal — if `python3` is unavailable the commit still succeeds.
+
+**Your only job:** edit `progress-tracker.json`, then `git commit` + `git push`. Everything
+else is automatic.
+
 ### One-step publish (sync + commit + push)
 
 To sync the embedded data and push in a single step, use the publish helper:

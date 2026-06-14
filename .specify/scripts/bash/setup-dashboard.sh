@@ -40,6 +40,14 @@ else
     echo -e "   Run: /speckit-dashboard to generate the full dashboard"
 fi
 
+# Activate the auto-sync git hook (runs sync on every commit). Requires .githooks/ at repo root.
+GIT_ROOT="$(cd "$PROJECT_ROOT/.." && git rev-parse --show-toplevel 2>/dev/null || true)"
+if [ -n "$GIT_ROOT" ] && [ -f "$GIT_ROOT/.githooks/pre-commit" ]; then
+    ( cd "$GIT_ROOT" && git config core.hooksPath .githooks ) \
+        && echo -e "${GREEN}✅ Enabled auto-sync git hook (core.hooksPath=.githooks)${NC}" \
+        || echo -e "${YELLOW}⚠️  Could not set core.hooksPath — run: git config core.hooksPath .githooks${NC}"
+fi
+
 # Sync the embedded offline-fallback data from progress-tracker.json (single source of truth).
 # Keeps the dashboard correct even when opened directly via file://.
 SYNC_SCRIPT="$SPECKIT_ROOT/scripts/sync-dashboard-data.py"

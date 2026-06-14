@@ -598,6 +598,7 @@
             <button class="tab" data-tab="built">Built Stories</button>
             <button class="tab" data-tab="contributors">Contributors</button>
             <button class="tab" data-tab="epics">Epics & Stories</button>
+            <button class="tab" data-tab="testcases">Test Cases</button>
             <button class="tab" data-tab="tokens">Token Details</button>
         </div>
 
@@ -633,6 +634,11 @@
                     <div class="stat-label">Est. Tokens</div>
                     <div class="stat-value purple" id="total-tokens">…</div>
                     <div class="stat-detail">All contributors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Test Cases</div>
+                    <div class="stat-value orange" id="total-testcases">…</div>
+                    <div class="stat-detail">Manual + automated</div>
                 </div>
             </div>
 
@@ -677,6 +683,11 @@
                 <div class="chart-card">
                     <div class="chart-title">Stories by Epic</div>
                     <div class="bar-chart" id="stories-chart"></div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">Test Cases by Epic</div>
+                    <div class="bar-chart" id="testcases-chart"></div>
                 </div>
             </div>
 
@@ -819,6 +830,90 @@
             <div id="epics-list"></div>
         </div>
 
+        <!-- Test Cases Tab -->
+        <div class="tab-content" id="testcases">
+            <div class="summary-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Test Cases</div>
+                    <div class="stat-value blue" id="tc-total">…</div>
+                    <div class="stat-detail">Manual + automated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Manual / UAT</div>
+                    <div class="stat-value yellow" id="tc-manual">…</div>
+                    <div class="stat-detail">TC- cases in specs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Automated</div>
+                    <div class="stat-value green" id="tc-automated">…</div>
+                    <div class="stat-detail">AT- cases in specs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Epics Covered</div>
+                    <div class="stat-value purple" id="tc-epics">…</div>
+                    <div class="stat-detail">With test-cases.md</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Tokens (Test Cases)</div>
+                    <div class="stat-value orange" id="tc-tokens">…</div>
+                    <div class="stat-detail">From test-tagged sessions</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 style="margin-bottom: 16px;">Automated Suite (emitted code)</h2>
+                <div class="deployment-card">
+                    <div class="component-grid">
+                        <div class="component-stat"><div class="component-count" id="tc-apex-classes">0</div><div class="component-label">Apex Test Classes</div></div>
+                        <div class="component-stat"><div class="component-count" id="tc-apex-methods">0</div><div class="component-label">Apex Test Methods</div></div>
+                        <div class="component-stat"><div class="component-count" id="tc-jest-specs">0</div><div class="component-label">Jest Specs</div></div>
+                        <div class="component-stat"><div class="component-count" id="tc-jest-tests">0</div><div class="component-label">Jest Tests</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 32px;">
+                <h2 style="margin-bottom: 16px;">Test Cases by Epic</h2>
+                <div class="chart-card">
+                    <table class="token-table">
+                        <thead>
+                            <tr>
+                                <th>Epic</th>
+                                <th style="text-align: right;">Manual / UAT</th>
+                                <th style="text-align: right;">Automated</th>
+                                <th style="text-align: right;">Total</th>
+                                <th style="text-align: right;">Tokens</th>
+                                <th>test-cases.md</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tc-epic-table"></tbody>
+                        <tfoot>
+                            <tr style="background: var(--bg-tertiary);">
+                                <td style="font-weight: 600;">Total</td>
+                                <td style="text-align: right; font-weight: 600;" id="tc-foot-manual">…</td>
+                                <td style="text-align: right; font-weight: 600;" id="tc-foot-auto">…</td>
+                                <td style="text-align: right; font-weight: 600;" id="tc-foot-total">…</td>
+                                <td style="text-align: right; font-weight: 600;" class="token-value" id="tc-foot-tokens">…</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 32px;">
+                <h2 style="margin-bottom: 16px;">Generating Test Cases</h2>
+                <div class="deployment-card">
+                    <p style="color: var(--text-secondary); margin-bottom: 12px;">
+                        Run <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px;">/speckit-testcases</code> for a feature to generate manual/UAT + automated (Apex/Jest) scaffolds and a traceability matrix.
+                    </p>
+                    <p style="color: var(--text-secondary); font-size: 13px;">
+                        Then run <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px;">python3 scripts/sync-testcases-data.py</code> to refresh these numbers (counted live from <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px;">test-cases.md</code> and emitted Apex/Jest files — nothing hardcoded).
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <!-- Token Details Tab -->
         <div class="tab-content" id="tokens">
             <div class="section"></div>
@@ -831,7 +926,7 @@
     </div>
 
     <script type="application/json" id="embedded-data">
-{"project":{"name":"{{PROJECT_NAME}}","jira_project":"{{JIRA_PROJECT_KEY}}","jira_url":"{{JIRA_URL}}","github_repo":"{{GITHUB_REPO}}","salesforce_org":"{{SF_ORG_NAME}}","last_updated":"{{TIMESTAMP}}"},"summary":{"total_epics":0,"total_stories":0,"stories_built":0,"stories_in_progress":0,"stories_in_review":0,"stories_pending":0,"completion_percentage":0,"total_tokens":0},"contributors":[],"token_consumption":{"note":"Token estimates based on conversation session length and complexity.","total_estimated_tokens":0,"by_contributor":[],"by_epic":[]},"deployment_status":{"note":"Track what's deployed to the Salesforce org.","last_deployment":null,"deployed_components":{"custom_objects":[],"custom_fields":[],"apex_classes":[],"lwc_components":[],"permission_sets":[],"flexipages":[]}},"epics":[]}
+{"project":{"name":"{{PROJECT_NAME}}","jira_project":"{{JIRA_PROJECT_KEY}}","jira_url":"{{JIRA_URL}}","github_repo":"{{GITHUB_REPO}}","salesforce_org":"{{SF_ORG_NAME}}","last_updated":"{{TIMESTAMP}}"},"summary":{"total_epics":0,"total_stories":0,"stories_built":0,"stories_in_progress":0,"stories_in_review":0,"stories_pending":0,"completion_percentage":0,"total_tokens":0,"total_test_cases":0},"contributors":[],"token_consumption":{"note":"Token estimates based on conversation session length and complexity.","total_estimated_tokens":0,"by_contributor":[],"by_epic":[]},"deployment_status":{"note":"Track what's deployed to the Salesforce org.","last_deployment":null,"deployed_components":{"custom_objects":[],"custom_fields":[],"apex_classes":[],"lwc_components":[],"permission_sets":[],"flexipages":[]}},"epics":[],"test_cases":{"generated":"2026-06-14T16:59:09+05:30","note":"Counts derived live from test-cases.md and emitted Apex/Jest files; tokens from test-tagged sessions. Not hardcoded.","totals":{"manual":0,"automated":0,"total":0,"tokens":0,"epics_covered":0,"epics_total":0},"automated_suite":{"apex_test_classes":0,"apex_test_methods":0,"jest_specs":0,"jest_tests":0},"by_epic":[]}}
     </script>
     <script>
         // Tab switching
@@ -893,6 +988,8 @@
             document.getElementById('stories-progress').textContent = data.summary.stories_in_progress || 0;
             document.getElementById('stories-review').textContent = data.summary.stories_in_review || 0;
             document.getElementById('total-tokens').textContent = formatTokens(data.summary.total_tokens);
+            const tcOv = document.getElementById('total-testcases');
+            if (tcOv) tcOv.textContent = (data.test_cases && data.test_cases.totals) ? data.test_cases.totals.total : 0;
             
             // Progress bar
             const total = data.summary.total_stories;
@@ -940,6 +1037,7 @@
             renderTokenBreakdown(data);
             renderEpics(data);
             renderTokenSessions(data);
+            renderTestCases(data);
 
             // Last updated
             document.getElementById('last-updated').textContent = 
@@ -1106,6 +1204,51 @@
             list.innerHTML = html;
         }
 
+        function renderTestCases(data) {
+            const tc = data.test_cases;
+            const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            // Overview chart (renders empty when no data so it never shows stale values)
+            const chart = document.getElementById('testcases-chart');
+            const rows = tc ? (tc.by_epic || []) : [];
+            if (chart) {
+                const max = Math.max(1, ...rows.map(e => e.total));
+                chart.innerHTML = rows.map((e, i) => `
+                    <div class="bar-item">
+                        <span class="bar-label">${e.epic_name}</span>
+                        <div class="bar-track">
+                            <div class="bar-fill epic${(i % 6) + 1}" style="width: ${(e.total / max * 100).toFixed(1)}%;">${e.total}</div>
+                        </div>
+                    </div>`).join('');
+            }
+            if (!tc) return;
+            const t = tc.totals || {};
+            setTxt('tc-total', t.total || 0);
+            setTxt('tc-manual', t.manual || 0);
+            setTxt('tc-automated', t.automated || 0);
+            setTxt('tc-epics', (t.epics_covered || 0) + '/' + (t.epics_total || 0));
+            setTxt('tc-tokens', formatTokens(t.tokens || 0));
+            const s = tc.automated_suite || {};
+            setTxt('tc-apex-classes', s.apex_test_classes || 0);
+            setTxt('tc-apex-methods', s.apex_test_methods || 0);
+            setTxt('tc-jest-specs', s.jest_specs || 0);
+            setTxt('tc-jest-tests', s.jest_tests || 0);
+            const body = document.getElementById('tc-epic-table');
+            if (body) {
+                body.innerHTML = rows.map(e => `<tr>
+                    <td>${e.epic_name}</td>
+                    <td style="text-align: right;">${e.manual}</td>
+                    <td style="text-align: right;">${e.automated}</td>
+                    <td style="text-align: right; font-weight: 600;">${e.total}</td>
+                    <td style="text-align: right;" class="token-value">${e.tokens ? formatTokens(e.tokens) : '—'}</td>
+                    <td>${e.doc ? '✅ generated' : '<span style="color: var(--text-muted);">— not generated</span>'}</td>
+                </tr>`).join('');
+            }
+            setTxt('tc-foot-manual', t.manual || 0);
+            setTxt('tc-foot-auto', t.automated || 0);
+            setTxt('tc-foot-total', t.total || 0);
+            setTxt('tc-foot-tokens', formatTokens(t.tokens || 0));
+        }
+
         function renderTokenSessions(data) {
             const section = document.querySelector('#tokens .section');
             if (!section || !data.token_consumption) return;
@@ -1113,7 +1256,8 @@
             (data.token_consumption.by_epic || []).forEach(e => {
                 let rows = '';
                 (e.sessions || []).forEach(s => {
-                    rows += `<tr><td>${s.date}</td><td>${contributorName(data, s.contributor)}</td><td>${s.activity}</td><td style="text-align: right;" class="token-value">${formatTokens(s.tokens)}</td></tr>`;
+                    const story = s.story ? `<span class="story-badge" style="margin-right:8px;">${s.story}</span>` : '';
+                    rows += `<tr><td>${s.date}</td><td>${contributorName(data, s.contributor)}</td><td>${story}${s.activity}</td><td style="text-align: right;" class="token-value">${formatTokens(s.tokens)}</td></tr>`;
                 });
                 html += `<div class="epic-card">
                     <div class="epic-header"><div class="epic-title"><span class="epic-name">${e.epic_name}</span><span style="color: var(--accent-purple); font-weight: 600; margin-left: 12px;">${formatTokens(e.total_tokens)} tokens</span></div></div>
