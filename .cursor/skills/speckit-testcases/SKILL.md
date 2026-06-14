@@ -59,12 +59,28 @@ the run, e.g. "only US1", "manual only", "Apex only", or "regenerate the matrix"
 
 3. **Generate manual / UAT test cases** into `TEST_CASES_FILE` using `TESTCASES_TEMPLATE`:
    - One section per user story (priority order). For **each acceptance scenario**, create at
-     least one positive test case; for **each edge case**, a negative/boundary test case.
-   - Each test case MUST have: stable ID (`TC-US<n>-<nn>`), type (positive/negative/edge/
-     security/performance), priority, **traces to** (the exact scenario/edge), preconditions,
-     concrete test data, numbered steps, and an expected result that matches the `Then` clause.
+     least one **positive** test case AND, wherever the story has input, an action, or access
+     control, at least one **negative** test case. For **each edge case**, an edge/boundary case.
+     Positive and negative are **distinct** types — do **not** file a negative as "edge".
+   - Each test case MUST have: stable ID (`TC-US<n>-<nn>`), type (one of **Positive / Negative /
+     Edge / Security / Performance**), priority, **traces to** (the exact scenario/edge),
+     preconditions, concrete test data, numbered steps, and an expected result that matches the
+     `Then` clause.
+   - **Granular negative matrix (required)**: add a dedicated "Negative & validation test cases"
+     section with `TC-NEG-<nn>` IDs grouped by category, derived from the real implementation:
+       - **Input validation** — one negative per required-field guard / format / range / size
+         limit in each controller method (e.g. each `String.isBlank(...)` throw, each
+         `Date.valueOf` parse, malformed JSON, out-of-range number).
+       - **Referential / null** — null/blank Id, non-existent or inaccessible parent record.
+       - **Authorization / persona** — each persona that must NOT see/do an action is blocked.
+       - **Sharing / FLS** — out-of-span record hidden (`with sharing`); FLS-stripped field via
+         `WITH USER_MODE`; records the user can't see are omitted, not errored.
+     Tag each negative `[A]` (automated now) or `[M]` (manual) and assert the system **rejects or
+     handles** the bad input — never corrupts data or throws an unhandled error.
    - Add cross-cutting tests: bulk/governor (200 records), persona/FLS denial (from Persona
      Capabilities), and any Success Criteria that are measurable.
+   - In the document legend, state the **Type taxonomy** (Positive / Negative / Edge / Security /
+     Performance) and include `TC-NEG-nn` in the ID scheme so positive vs negative is explicit.
 
 4. **Generate automated tests** (skip layers the feature doesn't use, or per user scope):
    - **Apex** (`@isTest`): one test class per Apex class under test. Place at
@@ -123,8 +139,10 @@ Report to the user:
 
 ## Done When
 
-- [ ] `test-cases.md` generated with per-story manual cases, edge/cross-cutting cases, and a traceability matrix
-- [ ] Automated Apex/Jest scaffolds created at correct paths (for in-scope layers)
+- [ ] `test-cases.md` generated with per-story manual cases (**both positive and negative**), edge/cross-cutting cases, and a traceability matrix
+- [ ] Dedicated granular **Negative & validation** matrix present (`TC-NEG-nn` by category: input-validation / referential / authorization / sharing-FLS)
+- [ ] Type taxonomy + `TC-NEG` documented in the legend/ID scheme
+- [ ] Automated Apex/Jest scaffolds created at correct paths (for in-scope layers), including negative-path methods (invalid input, null, persona/FLS)
 - [ ] Every acceptance scenario and edge case appears in the matrix; gaps flagged
 - [ ] Extension hooks dispatched or skipped per the rules above
 - [ ] Completion reported with counts, coverage, and gaps

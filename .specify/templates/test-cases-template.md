@@ -23,6 +23,13 @@
 - **Automated tests** — Apex `@isTest` classes and LWC Jest specs that encode the same
   scenarios. Paths point to where the code lives (or should live, for TDD-first).
 - **Traceability matrix** — proves every acceptance scenario and edge case is covered.
+- **`Type` taxonomy** — every case is one of: **Positive** (happy path), **Negative**
+  (invalid input / unauthorized / validation failure), **Edge** (empty / boundary / multi-state),
+  **Security** (sharing / FLS), **Performance** (bulk / governor limits). Positive and Negative
+  are distinct — keep at least one of each per story wherever there is input, an action, or access control.
+
+ID scheme: `TC-US<n>-<nn>` manual · `AT-US<n>-<nn>` automated · `TC-EDGE-nn` / `TC-SEC-nn` /
+`TC-PERF-nn` cross-cutting · `TC-NEG-nn` granular negative/validation.
 
 ---
 
@@ -100,6 +107,42 @@ _(same structure as User Story 1)_
 | TC-EDGE-01 | [boundary condition behavior] | spec.md Edge Cases | Edge |
 | TC-EDGE-02 | [governor-limit / bulk: 200 records] | NFR | Performance |
 | TC-SEC-01 | [persona without permission is denied] | Persona Capabilities | Security/FLS |
+
+---
+
+## Negative & validation test cases (granular)
+
+> Explicit failure-path coverage by category, mapped to the real controllers/validations.
+> `[A]` = automated · `[M]` = manual. Each asserts the system **rejects/handles** the bad
+> input rather than corrupting data or throwing an unhandled error. Add one row per guard.
+
+### N1 · Input validation (per controller method)
+
+| TC ID | Type | Target | Bad input | Expected result | Cov |
+|-------|------|--------|-----------|-----------------|-----|
+| TC-NEG-01 | Negative | `<Class>.<method>` | [required field blank] | Handled error "[message]"; nothing persisted | [A] |
+| TC-NEG-02 | Negative | `<Class>.<method>` | [bad date/number/format] | Parse/validation rejected; no partial write | [M] |
+| TC-NEG-03 | Negative | `<Class>.<method>` | [malformed JSON / oversized text] | Rejected with clear message | [M] |
+
+### N2 · Referential / null
+
+| TC ID | Type | Target | Bad input | Expected result | Cov |
+|-------|------|--------|-----------|-----------------|-----|
+| TC-NEG-04 | Negative | `<Class>.<method>` | null/blank Id | Handled "record Id required" | [A] |
+| TC-NEG-05 | Negative | `<Class>.<method>` | non-existent / inaccessible record | "not found or not accessible" | [M] |
+
+### N3 · Authorization / persona
+
+| TC ID | Type | Target | Scenario | Expected result | Cov |
+|-------|------|--------|----------|-----------------|-----|
+| TC-NEG-06 | Negative | [feature/action] | persona that must NOT act | Action hidden / blocked by CRUD | [M] |
+
+### N4 · Sharing & FLS
+
+| TC ID | Type | Target | Scenario | Expected result | Cov |
+|-------|------|--------|----------|-----------------|-----|
+| TC-NEG-07 | Negative | record sharing | user outside span opens record | Not visible (`with sharing`); no widening | [M] |
+| TC-NEG-08 | Negative | FLS / `USER_MODE` | user lacks FLS on a queried field | Field stripped/handled; no leak, no crash | [A] |
 
 ---
 
