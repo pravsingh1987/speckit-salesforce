@@ -29,7 +29,7 @@ Cursor loads agent skills **per project** (from `<project>/.cursor/skills/`), so
 **Install / add to a project:**
 
 ```bash
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
+git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; bash ~/.speckit-salesforce/install.sh .
 ```
 
 **Update an installed project to the latest:**
@@ -52,7 +52,7 @@ speckit init ./my-project
 **Install / add to a project:**
 
 ```bash
-git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
+git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; bash ~/.speckit-salesforce/install.sh .
 ```
 
 **Update an installed project to the latest:**
