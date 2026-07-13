@@ -81,24 +81,6 @@ The one-command install below caches the package once, then copies skills into y
 
 **Run this from inside your project folder.** Works in BOTH Cursor's integrated terminal AND macOS Terminal.
 
-> **Choose ONE track — Internal *or* External — and use only the commands under that heading. Do not mix commands between the two tracks.**
-
-#### 🔒 Salesforce Internal (Soma Git)
-
-**Install / add to a project:**
-
-```bash
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; bash ~/.speckit-salesforce/install.sh .
-```
-
-**Update an installed project to the latest:**
-
-```bash
-git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
-```
-
-#### 🌐 External (GitHub)
-
 **Install / add to a project:**
 
 ```bash
@@ -150,21 +132,10 @@ So this works identically whether you run it in Cursor or macOS Terminal. Pick w
 
 ### Alternative: CLI Installation (pip/uv)
 
-If you prefer a Python CLI. **Use the commands from your track only — Internal *or* External.**
+If you prefer a Python CLI:
 
 **Step 1: Install the CLI**
 
-🔒 **Salesforce Internal (Soma Git):**
-```bash
-# uv (fastest)
-uv tool install speckit-salesforce --from git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-# pip
-pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-# pipx
-pipx install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-```
-
-🌐 **External (GitHub):**
 ```bash
 # uv (fastest)
 uv tool install speckit-salesforce --from git+https://github.com/pravsingh1987/speckit-salesforce.git
@@ -202,12 +173,6 @@ Use this if you want SpecKit files copied directly into a single project (no sym
 
 **Step 1: Clone the Package**
 
-Salesforce Internal:
-```bash
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-```
-
-External:
 ```bash
 git clone https://github.com/pravsingh1987/speckit-salesforce.git
 ```
@@ -225,7 +190,7 @@ cd my-salesforce-project
 bash /path/to/speckit-salesforce/install.sh .
 ```
 
-**Example (Salesforce Internal):**
+**Example:**
 ```bash
 bash ~/speckit-salesforce/install.sh .
 ```

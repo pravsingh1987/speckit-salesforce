@@ -19,58 +19,26 @@ Cursor loads agent skills **per project** (from `<project>/.cursor/skills/`), so
 
 **Run it from inside your project folder**, in a normal terminal (Cursor's integrated terminal or macOS Terminal — not inside an AI agent sandbox).
 
-> **Choose ONE track — Internal *or* External — and use only the commands under that heading.**
-> The two are independent; do not mix commands between them.
-
----
-
-### 🔒 Salesforce Internal (Soma Git)
-
-**Install / add to a project:**
-
-```bash
-git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; bash ~/.speckit-salesforce/install.sh .
-```
-
-**Update an installed project to the latest:**
-
-```bash
-git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
-```
-
-**Alternative — pip install (Python CLI):**
-
-```bash
-pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-speckit init ./my-project
-```
-
----
-
-### 🌐 External (GitHub)
-
-**Install / add to a project:**
+### Install / add to a project
 
 ```bash
 git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; bash ~/.speckit-salesforce/install.sh .
 ```
 
-**Update an installed project to the latest:**
+### Update an installed project to the latest
 
 ```bash
 git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
 ```
 
-**Alternative — pip install (Python CLI):**
+### Alternative — pip install (Python CLI)
 
 ```bash
 pip install git+https://github.com/pravsingh1987/speckit-salesforce.git
 speckit init ./my-project
 ```
 
----
-
-### After install (applies to whichever track you used)
+### After install
 
 The one-liner caches the package at `~/.speckit-salesforce` and copies the skills, always-on Cursor rules (`.cursor/rules/` — grounding guardrails, wireframe anatomy, dashboard enforcement), `.specify/`, and `docs/` into your current project. Then:
 
@@ -82,8 +50,6 @@ The one-liner caches the package at `~/.speckit-salesforce` and copies the skill
 ls .cursor/skills   # 14 speckit-* commands
 ls .cursor/rules    # dashboard-enforcement.md, grounding-guardrails.mdc, wireframe-salesforce-anatomy.mdc
 ```
-
-> **Pick one track and stick to it.** Both tracks share the same `~/.speckit-salesforce` cache, so you can only be pointed at one remote at a time. To switch tracks, delete the cache first: `rm -rf ~/.speckit-salesforce`.
 
 > **Why per-project?** Unlike Claude Code (which has a global `~/.claude/skills/`), Cursor reads skills from each project's `.cursor/skills/` folder. There is no global skills directory in Cursor, so each project needs its own copy. The one-liner makes that a single command.
 
