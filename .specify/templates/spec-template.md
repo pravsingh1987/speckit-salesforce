@@ -111,34 +111,27 @@
   (do not invent fields). Group by panel. This is data/UX detail, NOT implementation — name
   WHAT is visible, not the component or query that renders it.
 
-  PHARMA DOMAIN GROUNDING (Lupin standard):
-  Before writing this section, inspect the relevant objects under:
-    ../lupin-hospital/force-app/main/default/objects/<Object>/fields/
+  DOMAIN GROUNDING:
+  Before writing this section, inspect the relevant objects in the Salesforce project under:
+    <sfdx-project>/force-app/main/default/objects/<Object>/fields/
+  and cross-reference the terminology defined in `.specify/memory/domain.md` and
+  `.specify/memory/taxonomy.md`. Use the REAL API names from the org — never invent fields.
 
   For each module/tab, create a field table with columns:
-  | Field (API Name) | Pharma Purpose |
-
-  Cross-reference against pharma/life sciences domain fields:
-  - Hospital: empanelment, drug licenses, NABH/NABL/JCI, wallet share, bed capacity
-  - HCP: KOL tier, prescribing frequency, medical specialization, detailing dates
-  - Products: molecule, formulary status, market share, competitive threat
-  - Departments: HOD/SPOC, consumption, penetration, competitor brands, payment terms
-  - Suppliers: primary flag, credit days, therapy coverage
-  - Tenders: tender type, L1 price, reference number, penalty clauses
-  - Visits: purpose (detailing, KOL engagement), outcome, products discussed, samples
+  | Field (API Name) | Business Purpose |
 -->
 
 #### [Tab/Panel 1]: [Name]
 
-| Field (API Name) | Pharma Purpose |
-|------------------|----------------|
-| `Field_Name__c` | Why this field matters to the pharma KAM workflow |
+| Field (API Name) | Business Purpose |
+|------------------|------------------|
+| `Field_Name__c` | Why this field matters to the user's workflow |
 
 #### [Tab/Panel 2]: [Name]
 
-| Field (API Name) | Pharma Purpose |
-|------------------|----------------|
-| `Field_Name__c` | Why this field matters to the pharma KAM workflow |
+| Field (API Name) | Business Purpose |
+|------------------|------------------|
+| `Field_Name__c` | Why this field matters to the user's workflow |
 
 ## Navigation & Interactions (clicks) *(mandatory for UI features)*
 

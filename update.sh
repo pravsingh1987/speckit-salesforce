@@ -86,6 +86,7 @@ echo ""
 echo -e "  ${BOLD}1${NC}) All components (recommended)"
 echo -e "  ${BOLD}2${NC}) Agent skills only (.cursor/skills/)"
 echo -e "  ${BOLD}3${NC}) Templates only (.specify/templates/)"
+echo -e "     ${DIM}(option 1 also refreshes .cursor/rules guardrails)${NC}"
 echo -e "  ${BOLD}4${NC}) Dashboard only (docs/progress-dashboard.html)"
 echo -e "  ${BOLD}5${NC}) Memory file templates only (.specify/memory/)"
 echo -e "  ${BOLD}6${NC}) Custom selection"
@@ -99,6 +100,7 @@ UPDATE_TEMPLATES=false
 UPDATE_DASHBOARD=false
 UPDATE_MEMORY=false
 UPDATE_SCRIPTS=false
+UPDATE_RULES=false
 
 case $UPDATE_CHOICE in
     1)
@@ -106,6 +108,7 @@ case $UPDATE_CHOICE in
         UPDATE_TEMPLATES=true
         UPDATE_DASHBOARD=true
         UPDATE_SCRIPTS=true
+        UPDATE_RULES=true
         # Memory templates only if user confirms (to avoid overwriting customizations)
         ;;
     2)
@@ -126,6 +129,7 @@ case $UPDATE_CHOICE in
         read -p "Update templates? (Y/n): " ans && [[ "${ans:-Y}" =~ ^[Yy]$ ]] && UPDATE_TEMPLATES=true
         read -p "Update dashboard? (Y/n): " ans && [[ "${ans:-Y}" =~ ^[Yy]$ ]] && UPDATE_DASHBOARD=true
         read -p "Update scripts? (Y/n): " ans && [[ "${ans:-Y}" =~ ^[Yy]$ ]] && UPDATE_SCRIPTS=true
+        read -p "Update Cursor rules? (Y/n): " ans && [[ "${ans:-Y}" =~ ^[Yy]$ ]] && UPDATE_RULES=true
         read -p "Update memory templates? (y/N): " ans && [[ "$ans" =~ ^[Yy]$ ]] && UPDATE_MEMORY=true
         ;;
 esac
@@ -174,7 +178,19 @@ if [ "$UPDATE_SKILLS" = true ]; then
     if [ -d "$SCRIPT_DIR/.cursor/skills" ]; then
         mkdir -p "$TARGET_DIR/.cursor"
         cp -r "$SCRIPT_DIR/.cursor/skills" "$TARGET_DIR/.cursor/"
-        echo -e "  ${GREEN}✓${NC} Updated agent skills (12 commands)"
+        SKILL_COUNT=$(ls "$TARGET_DIR/.cursor/skills" 2>/dev/null | wc -l | tr -d ' ')
+        echo -e "  ${GREEN}✓${NC} Updated agent skills ($SKILL_COUNT commands)"
+        ((UPDATED_COUNT++))
+    fi
+fi
+
+# Update Cursor rules (always-on guardrails)
+if [ "$UPDATE_RULES" = true ]; then
+    if [ -d "$SCRIPT_DIR/.cursor/rules" ]; then
+        mkdir -p "$TARGET_DIR/.cursor"
+        cp -r "$SCRIPT_DIR/.cursor/rules" "$TARGET_DIR/.cursor/"
+        RULE_COUNT=$(ls "$TARGET_DIR/.cursor/rules" 2>/dev/null | wc -l | tr -d ' ')
+        echo -e "  ${GREEN}✓${NC} Updated Cursor rules ($RULE_COUNT guardrails)"
         ((UPDATED_COUNT++))
     fi
 fi

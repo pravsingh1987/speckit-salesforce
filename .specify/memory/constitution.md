@@ -1,18 +1,11 @@
 <!--
-SYNC IMPACT REPORT
-Version change: 2.0.0 → 2.1.0  (MINOR: two prior Lupin LSC principles restored verbatim)
+SPECKIT SALESFORCE CONSTITUTION (sample / starting point)
 
-Bump rationale: v2.0.0 embedded the stakeholder-authored "AgenticDev Salesforce
-Constitution" (principles I–VIII) but folded the Lupin Life Sciences principles into
-Principle I instead of keeping them. v2.1.0 restores them verbatim as Principles IX and
-X (Industry-First, Minimal Customization; Salesforce Life Sciences Data Model Alignment),
-preserving both the generic AgenticDev frame and the Lupin-specific guidance. No
-principle removed or redefined → MINOR.
+This is a strong, generic Salesforce delivery constitution intended as a starting point for
+any project. Run `/speckit-constitution` to tailor the intro, principles, and version to your
+engagement. Replace the [PROJECT NAME] placeholder below with your project.
 
-History: 1.0.0 (initial) → 1.1.0 (Lupin LSC principles added) → 2.0.0 (AgenticDev
-redefinition I–VIII) → 2.1.0 (Lupin LSC principles IX–X restored).
-
-Principle set (2.1.0):
+Principle set:
 - I.    Architectural Integrity & Platform-First (NON-NEGOTIABLE)
 - II.   Security & Access Control (NON-NEGOTIABLE)
 - III.  Governor Limits & Bulkification (NON-NEGOTIABLE)
@@ -21,33 +14,21 @@ Principle set (2.1.0):
 - VI.   Permission Sets & Security Governance (NON-NEGOTIABLE)
 - VII.  Lightning Web Components (LWC) Standards
 - VIII. Agentforce & Agent Script Standards
-- IX.   Industry-First, Minimal Customization (Lupin Life Sciences)  [restored]
-- X.    Salesforce Life Sciences Data Model Alignment                [restored]
+- IX.   Industry-First, Minimal Customization
+- X.    Industry Data Model Alignment
 
 Added sections: Audit & Anti-Pattern Tooling; Salesforce Platform Constraints;
 Development Workflow; Governance.
 
-Templates reviewed for consistency:
-- .specify/templates/plan-template.md ............ ✅ Constitution Check gate reads this
-  file dynamically; audit + coverage gates enforced through it. No edit.
-- .specify/templates/spec-template.md ............ ✅ No mandatory section change required.
-- .specify/templates/tasks-template.md ........... ⚠ PENDING — should add task types for a
-  per-feature permission set and a Permissions.md artifact (Principle VI). Offered as
-  follow-up; not auto-edited.
-- .cursor/rules/specify-rules.mdc ................ governs detailed implementation rules
-  (authoritative per Governance below).
-
-Command references adapted to this Cursor install (hyphenated: /speckit-constitution,
-/speckit-specify, /speckit-plan, /speckit-tasks, /speckit-implement, /speckit-analyze).
-
-Follow-up TODOs: update tasks-template.md for permission-set + Permissions.md tasks.
+Command references use the hyphenated Cursor form: /speckit-constitution, /speckit-specify,
+/speckit-plan, /speckit-tasks, /speckit-implement, /speckit-analyze.
 -->
 
-# AgenticDev Salesforce Constitution
+# Salesforce Delivery Constitution
 
-Governs the `Lupin-Stories` spec workspace and the Lupin Pharmaceuticals KAM Salesforce
-solution. This document holds the principle-level summary; the authoritative source for
-detailed implementation rules is `.cursor/rules/specify-rules.mdc`.
+Governs the **[PROJECT NAME]** Salesforce solution. This document holds the principle-level
+summary; the authoritative source for detailed implementation rules is
+`.cursor/rules/specify-rules.mdc` (generated per project).
 
 ## Core Principles
 
@@ -132,29 +113,29 @@ fields/metadata → Apex → Flow → `GenAiPromptTemplate` / `GenAiFunction` / 
 fields) MUST be used; bare `List<T>` parameters are incompatible with Agent Script
 actions.
 
-### IX. Industry-First, Minimal Customization (Lupin Life Sciences)
+### IX. Industry-First, Minimal Customization
 
 Standard and industry-cloud capabilities MUST be preferred over bespoke build, in this
-order: (1) declarative standard features, (2) Salesforce Life Sciences Cloud / Health
-Cloud / Revenue Lifecycle Management features, (3) configuration, and only then
-(4) custom metadata or code. A custom object, field, Apex class, or LWC MAY be
+order: (1) declarative standard features, (2) the relevant Salesforce Industry Cloud /
+Revenue Lifecycle Management features for the project's domain, (3) configuration, and only
+then (4) custom metadata or code. A custom object, field, Apex class, or LWC MAY be
 introduced ONLY when no generally-available standard equivalent exists; the
 justification and the rejected simpler alternative MUST be recorded in the spec's
 Complexity Tracking. Redundant or duplicate custom objects are prohibited.
 
 Rationale: minimal customization is upgrade-safe, lower-maintenance, and aligned with
 the platform roadmap; custom build is a deliberate, documented exception. This principle
-operationalizes Principle I for the Lupin Life Sciences context.
+operationalizes Principle I.
 
-### X. Salesforce Life Sciences Data Model Alignment
+### X. Industry Data Model Alignment
 
-The solution MUST model entities on the Salesforce Life Sciences / Health Cloud
-healthcare pattern rather than reinventing it:
+The solution MUST model entities on the relevant Salesforce industry / standard data
+model rather than reinventing it. Align to the canonical objects for the project's domain
+(as recorded in `.specify/memory/domain.md`), for example:
 
-- Healthcare Organization (HCO) = `Account`; Healthcare Provider (HCP) = `Contact`
-  (or Person Account where adopted).
-- HCP↔HCO affiliations MUST use the native relationship model (Account Contact
-  Relationship / Health Cloud affiliations) rather than ad-hoc custom junctions.
+- Organizations = `Account`; People = `Contact` (or Person Account where adopted).
+- Party relationships MUST use the native relationship model (Account Contact
+  Relationship / industry affiliations) rather than ad-hoc custom junctions.
 - Reusable execution checklists MUST use standard Action Plans
   (ActionPlan / ActionPlanTemplate) where applicable.
 - Product, pricing, and quote-to-cash MUST use Revenue Lifecycle Management
@@ -163,15 +144,15 @@ healthcare pattern rather than reinventing it:
 Deviations from this data model MUST be justified in the spec.
 
 Rationale: the industry data model is proven, interoperable, and reduces bespoke
-maintenance; it is the canonical target shape for this solution.
+maintenance; it is the canonical target shape for the solution.
 
 ## Audit & Anti-Pattern Tooling
 
 Implementation components MUST be validated against the **Salesforce PS Audit Tool**
 while they are being created and before they are considered complete:
 
-- **Location**: `~/Documents/Sf PS Audit Tool/salesforce-audit-tool-v1.2.17`
-  (installed in the parent folder of this workspace).
+- **Location**: the Salesforce PS Audit Tool installed on the delivery machine
+  (configure the path for your environment).
 - **Scope**: static analysis and 5-tier grading for governor-limit violations
   (SOQL/DML in loops), security (CRUD/FLS, SOQL injection, XSS), performance / SOQL
   selectivity, test coverage, Apex best practices, and LWC anti-patterns — directly

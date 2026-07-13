@@ -3,7 +3,7 @@ name: "speckit-testcases"
 description: "Generate test cases (manual/UAT + automated Apex/Jest scaffolds) and a traceability matrix from a feature's user stories and acceptance scenarios."
 compatibility: "Requires spec-kit project structure with .specify/ directory"
 metadata:
-  author: "lupin-speckit"
+  author: "speckit-salesforce"
   source: "templates/commands/testcases.md"
   version: "1.0.0"
 ---

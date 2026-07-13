@@ -17,7 +17,7 @@
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| Standard Extension | `[Meaningful_Name]__c` | `Wallet_Share__c` |
+| Standard Extension | `[Meaningful_Name]__c` | `Region_Tier__c` |
 | Lookup Fields | `[Related_Object]__c` | `Primary_Contact__c` |
 | Formula Fields | `[Calculated_Value]__c` | `Calculated_Revenue__c` |
 | Rollup Summaries | `Total_[Metric]__c` | `Total_Opportunities__c` |
@@ -30,7 +30,7 @@
 | Trigger Handler | `[Object]TriggerHandler` | `AccountTriggerHandler` |
 | Service Class | `[Domain]Service` | `OpportunityService` |
 | Selector Class | `[Object]Selector` | `AccountSelector` |
-| Controller | `[Feature]Controller` | `Hospital360Controller` |
+| Controller | `[Feature]Controller` | `Account360Controller` |
 | Test Class | `[ClassName]Test` | `AccountServiceTest` |
 | Batch Class | `[Process]Batch` | `DataCleanupBatch` |
 | Queueable | `[Process]Queueable` | `EmailNotificationQueueable` |
@@ -39,7 +39,7 @@
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| Components | `camelCase` | `hospitalKpiPanel` |
+| Components | `camelCase` | `accountKpiPanel` |
 | Events | `handle[EventName]` | `handleAccountSelected` |
 | Wire Methods | `wire[DataName]` | `wireAccountData` |
 | Apex Methods | `get[Data]` / `save[Data]` | `getAccountKpis` |
@@ -48,7 +48,7 @@
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| Feature Access | `[App]_[Feature]_[Level]` | `KAM_Hospital360_Read` |
+| Feature Access | `[App]_[Feature]_[Level]` | `Sales_Account360_Read` |
 | Role-Based | `[App]_[Role]_Access` | `KAM_Manager_Access` |
 | Integration | `[System]_Integration` | `ERP_Integration` |
 

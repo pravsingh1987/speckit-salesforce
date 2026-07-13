@@ -996,19 +996,25 @@ After installation, your project will have:
 ```
 your-project/
 ├── .cursor/
-│   └── skills/                          ← Agent commands
-│       ├── speckit-specify/SKILL.md
-│       ├── speckit-plan/SKILL.md
-│       ├── speckit-tasks/SKILL.md
-│       ├── speckit-wireframe/SKILL.md
-│       ├── speckit-analyze/SKILL.md
-│       ├── speckit-implement/SKILL.md
-│       ├── speckit-dashboard/SKILL.md
-│       ├── speckit-checklist/SKILL.md
-│       ├── speckit-clarify/SKILL.md
-│       ├── speckit-constitution/SKILL.md
-│       ├── speckit-taskstoissues/SKILL.md
-│       └── speckit-agent-context-update/SKILL.md
+│   ├── skills/                          ← Agent commands
+│   │   ├── speckit-specify/SKILL.md
+│   │   ├── speckit-plan/SKILL.md
+│   │   ├── speckit-tasks/SKILL.md
+│   │   ├── speckit-wireframe/SKILL.md
+│   │   ├── speckit-analyze/SKILL.md
+│   │   ├── speckit-implement/SKILL.md
+│   │   ├── speckit-dashboard/SKILL.md
+│   │   ├── speckit-checklist/SKILL.md
+│   │   ├── speckit-clarify/SKILL.md
+│   │   ├── speckit-constitution/SKILL.md
+│   │   ├── speckit-testcases/SKILL.md
+│   │   ├── speckit-init/SKILL.md
+│   │   ├── speckit-taskstoissues/SKILL.md
+│   │   └── speckit-agent-context-update/SKILL.md
+│   └── rules/                           ← Always-on guardrails
+│       ├── grounding-guardrails.mdc
+│       ├── wireframe-salesforce-anatomy.mdc
+│       └── dashboard-enforcement.md
 ├── .specify/
 │   ├── templates/                       ← Output templates
 │   │   ├── spec-template.md
@@ -1201,7 +1207,7 @@ The `.specify/templates/` folder contains templates that define output formats.
 **Format Features**:
 - User stories with priorities (P1, P2, P3)
 - Acceptance scenarios in Given/When/Then format
-- Pharma domain field grounding (customizable)
+- Domain field grounding driven by `.specify/memory/` (customizable)
 
 ### plan-template.md
 
@@ -1294,11 +1300,14 @@ bash ~/speckit-salesforce/update.sh ~/my-salesforce-project
 
 | Option | What It Updates |
 |--------|----------------|
-| **All components** | Skills, templates, dashboard, scripts |
-| **Skills only** | `.cursor/skills/` (12 commands) |
+| **All components** | Skills, Cursor rules, templates, dashboard, scripts |
+| **Skills only** | `.cursor/skills/` (14 commands) |
 | **Templates only** | `.specify/templates/` |
 | **Dashboard only** | `docs/progress-dashboard.html` |
 | **Memory templates** | `.specify/memory/` (overwrites customizations) |
+
+> Cursor rules (`.cursor/rules/` — grounding guardrails, wireframe anatomy, dashboard
+> enforcement) are refreshed as part of **All components**.
 
 ### Manual Update (Alternative)
 
@@ -1307,6 +1316,9 @@ If you prefer to update manually:
 ```bash
 # Update skills only
 cp -r /path/to/speckit-salesforce/.cursor/skills/* /path/to/your-project/.cursor/skills/
+
+# Update Cursor rules (guardrails) only
+cp -r /path/to/speckit-salesforce/.cursor/rules/* /path/to/your-project/.cursor/rules/
 
 # Update templates only
 cp -r /path/to/speckit-salesforce/.specify/templates/* /path/to/your-project/.specify/templates/

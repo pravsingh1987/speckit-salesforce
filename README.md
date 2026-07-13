@@ -31,7 +31,7 @@ External / GitHub:
 git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
 ```
 
-This caches the package in `~/.speckit-salesforce` and copies the skills, `.specify/`, and `docs/` into your current project. Then:
+This caches the package in `~/.speckit-salesforce` and copies the skills, always-on Cursor rules (`.cursor/rules/` — grounding guardrails, wireframe anatomy, dashboard enforcement), `.specify/`, and `docs/` into your current project. Then:
 
 1. **Reload Cursor** (Cmd+Shift+P → "Reload Window")
 2. All `/speckit-*` commands now work in this project
@@ -187,7 +187,11 @@ After installation:
 ```
 your-project/
 ├── .cursor/
-│   └── skills/                    # Agent skills (12 commands)
+│   ├── skills/                    # Agent skills (14 commands)
+│   └── rules/                     # Always-on guardrails
+│       ├── grounding-guardrails.mdc        ← READ-FIRST memory/grounding mandate
+│       ├── wireframe-salesforce-anatomy.mdc ← Lightning record-page anatomy for wireframes
+│       └── dashboard-enforcement.md        ← Prompt to update dashboard after work
 ├── .specify/
 │   ├── templates/                 # Document templates
 │   ├── scripts/                   # Setup scripts

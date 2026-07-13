@@ -47,7 +47,7 @@ ID scheme: `TC-US<n>-<nn>` manual · `AT-US<n>-<nn>` automated · `TC-EDGE-nn` /
 | **Type** | Positive / Happy path |
 | **Priority** | P1 |
 | **Traces to** | Acceptance Scenario 1 |
-| **Preconditions** | [data + state required, e.g. "KAM user with read on Hospital, 1 empaneled hospital record"] |
+| **Preconditions** | [data + state required, e.g. "Sales user with Read on Account, 1 active Account record"] |
 | **Test data** | [concrete values / record names] |
 
 **Steps**

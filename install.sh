@@ -74,6 +74,13 @@ if [ "$SKILL_COUNT" -lt 1 ]; then
 fi
 echo -e "  ${GREEN}✓${NC} Agent skills ($SKILL_COUNT commands)"
 
+# Cursor rules — always-on guardrails (grounding, wireframe anatomy, dashboard enforcement)
+if [ -d "$SCRIPT_DIR/.cursor/rules" ]; then
+    cp -r "$SCRIPT_DIR/.cursor/rules" "$TARGET_DIR/.cursor/"
+    RULE_COUNT=$(ls "$TARGET_DIR/.cursor/rules" 2>/dev/null | wc -l | tr -d ' ')
+    echo -e "  ${GREEN}✓${NC} Cursor rules ($RULE_COUNT guardrails)"
+fi
+
 cp -r "$SCRIPT_DIR/docs" "$TARGET_DIR/"
 echo -e "  ${GREEN}✓${NC} Progress dashboard"
 

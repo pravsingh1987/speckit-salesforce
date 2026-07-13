@@ -25,6 +25,11 @@ This command bridges the gap between specification and implementation by produci
 - Spec includes **Navigation & Interactions** section
 - Figma MCP is available and authenticated
 
+> **MANDATORY**: Every wireframe MUST follow the real Salesforce Lightning record-page anatomy
+> defined in `.cursor/rules/wireframe-salesforce-anatomy.mdc` (global header → app nav → record
+> header with compact-layout highlights → body of standard/custom regions labelled `[Standard: …]`
+> / `[LWC: …]`). Use REAL object/field API names from the org — never invent fields.
+
 ## Outline
 
 1. **Setup**: Run `.specify/scripts/bash/check-prerequisites.sh --json` to get FEATURE_DIR, or use `$ARGUMENTS` if a specific feature is provided.
