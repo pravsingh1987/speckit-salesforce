@@ -81,19 +81,39 @@ The one-command install below caches the package once, then copies skills into y
 
 **Run this from inside your project folder.** Works in BOTH Cursor's integrated terminal AND macOS Terminal.
 
-Salesforce Internal:
+> **Choose ONE track — Internal *or* External — and use only the commands under that heading. Do not mix commands between the two tracks.**
+
+#### 🔒 Salesforce Internal (Soma Git)
+
+**Install / add to a project:**
 
 ```bash
 git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
 ```
 
-External / GitHub:
+**Update an installed project to the latest:**
+
+```bash
+git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
+```
+
+#### 🌐 External (GitHub)
+
+**Install / add to a project:**
 
 ```bash
 git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
 ```
 
-This copies the skills, always-on Cursor rules (`.cursor/rules/` — grounding guardrails, wireframe anatomy, dashboard enforcement), `.specify/`, and `docs/` into your current project, then runs the configuration wizard.
+**Update an installed project to the latest:**
+
+```bash
+git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
+```
+
+### After install (applies to whichever track you used)
+
+The install one-liner copies the skills, always-on Cursor rules (`.cursor/rules/` — grounding guardrails, wireframe anatomy, dashboard enforcement), `.specify/`, and `docs/` into your current project, then runs the configuration wizard. The updater preserves your `progress-tracker.json` and constitution customizations.
 
 After it finishes:
 
@@ -106,9 +126,11 @@ ls .cursor/skills   # 14 speckit-* commands
 ls .cursor/rules    # dashboard-enforcement.md, grounding-guardrails.mdc, wireframe-salesforce-anatomy.mdc
 ```
 
+> **Pick one track and stick to it.** Both tracks share the same `~/.speckit-salesforce` cache, so you can only be pointed at one remote at a time. To switch tracks, `rm -rf ~/.speckit-salesforce` and re-run the matching install one-liner.
+
 #### Adding SpecKit to Another Project
 
-The package is cached in `~/.speckit-salesforce`, so this is instant:
+The package is cached in `~/.speckit-salesforce` (from whichever track you installed), so this is instant — it uses the cache, no remote URL needed:
 
 ```bash
 cd ~/another-project
@@ -124,45 +146,32 @@ A common misconception is that you must use macOS Terminal. **That's not true fo
 
 So this works identically whether you run it in Cursor or macOS Terminal. Pick whichever is open.
 
-#### To Update an Installed Project to the Latest
-
-Pull the cached package, then run the updater (preserves your `progress-tracker.json` and constitution customizations):
-
-Salesforce Internal:
-
-```bash
-git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
-```
-
-External / GitHub:
-
-```bash
-git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
-```
-
-(The command is identical for both — the difference is only which remote `~/.speckit-salesforce` was originally cloned from. To switch remotes, `rm -rf ~/.speckit-salesforce` and re-run the matching install one-liner.)
-
 ---
 
 ### Alternative: CLI Installation (pip/uv)
 
-If you prefer a Python CLI:
+If you prefer a Python CLI. **Use the commands from your track only — Internal *or* External.**
 
 **Step 1: Install the CLI**
 
-Using uv (fastest):
+🔒 **Salesforce Internal (Soma Git):**
 ```bash
+# uv (fastest)
 uv tool install speckit-salesforce --from git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-```
-
-Using pip:
-```bash
+# pip
 pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+# pipx
+pipx install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
 ```
 
-Using pipx:
+🌐 **External (GitHub):**
 ```bash
-pipx install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+# uv (fastest)
+uv tool install speckit-salesforce --from git+https://github.com/pravsingh1987/speckit-salesforce.git
+# pip
+pip install git+https://github.com/pravsingh1987/speckit-salesforce.git
+# pipx
+pipx install git+https://github.com/pravsingh1987/speckit-salesforce.git
 ```
 
 **Step 2: Initialize Your Project**

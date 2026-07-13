@@ -17,9 +17,14 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 
 Cursor loads agent skills **per project** (from `<project>/.cursor/skills/`), so you install SpecKit into each project you want to use it in. The one-liner below does that in one step.
 
-**Run it from inside your project folder**, in a normal terminal (Cursor's integrated terminal or macOS Terminal — not inside an AI agent sandbox). Pick the remote for your environment:
+**Run it from inside your project folder**, in a normal terminal (Cursor's integrated terminal or macOS Terminal — not inside an AI agent sandbox).
 
-### Salesforce Internal (Soma Git)
+> **Choose ONE track — Internal *or* External — and use only the commands under that heading.**
+> The two are independent; do not mix commands between them.
+
+---
+
+### 🔒 Salesforce Internal (Soma Git)
 
 **Install / add to a project:**
 
@@ -33,7 +38,16 @@ git clone https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git ~/
 git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
 ```
 
-### External (GitHub)
+**Alternative — pip install (Python CLI):**
+
+```bash
+pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
+speckit init ./my-project
+```
+
+---
+
+### 🌐 External (GitHub)
 
 **Install / add to a project:**
 
@@ -47,7 +61,16 @@ git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-sal
 git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
 ```
 
-### After install (both remotes)
+**Alternative — pip install (Python CLI):**
+
+```bash
+pip install git+https://github.com/pravsingh1987/speckit-salesforce.git
+speckit init ./my-project
+```
+
+---
+
+### After install (applies to whichever track you used)
 
 The one-liner caches the package at `~/.speckit-salesforce` and copies the skills, always-on Cursor rules (`.cursor/rules/` — grounding guardrails, wireframe anatomy, dashboard enforcement), `.specify/`, and `docs/` into your current project. Then:
 
@@ -60,28 +83,17 @@ ls .cursor/skills   # 14 speckit-* commands
 ls .cursor/rules    # dashboard-enforcement.md, grounding-guardrails.mdc, wireframe-salesforce-anatomy.mdc
 ```
 
-> **Pick one remote.** Both one-liners share the same `~/.speckit-salesforce` cache, so choose internal **or** external. To switch, delete the cache first: `rm -rf ~/.speckit-salesforce`.
+> **Pick one track and stick to it.** Both tracks share the same `~/.speckit-salesforce` cache, so you can only be pointed at one remote at a time. To switch tracks, delete the cache first: `rm -rf ~/.speckit-salesforce`.
 
 > **Why per-project?** Unlike Claude Code (which has a global `~/.claude/skills/`), Cursor reads skills from each project's `.cursor/skills/` folder. There is no global skills directory in Cursor, so each project needs its own copy. The one-liner makes that a single command.
 
 ### Adding SpecKit to Another Project
 
-The package is already cached, so this is instant:
+The package is already cached (from whichever track you installed), so this is instant — it uses the cache, no remote URL needed:
 
 ```bash
 cd ~/another-project
 bash ~/.speckit-salesforce/install.sh .
-```
-
-### Alternative: pip Install
-
-```bash
-# Internal
-pip install git+https://git.soma.salesforce.com/praveensingh/speckit-salesforce.git
-# External
-pip install git+https://github.com/pravsingh1987/speckit-salesforce.git
-
-speckit init ./my-project
 ```
 
 See `INSTALLATION_GUIDE.md` for complete setup instructions.
