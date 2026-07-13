@@ -77,7 +77,29 @@ Cursor reads agent skills from **each project's** `.cursor/skills/` folder. Ther
 
 The one-command install below caches the package once, then copies skills into your current project. Adding it to more projects later is instant.
 
-### Recommended: One-Command Install
+### Fastest: One-Shot Manifest Install (no git clone, no typing)
+
+Paste this from inside your project folder. It reads the published release manifest, downloads the latest release zip from GitHub, extracts it, and installs SpecKit into the **current project** non-interactively:
+
+```bash
+python3 - <<'PY'
+import json, urllib.request, os, zipfile, subprocess
+manifest_url = "https://github.com/pravsingh1987/speckit-salesforce/raw/refs/heads/main/latest-release.json"
+manifest = json.load(urllib.request.urlopen(manifest_url))
+zip_url = manifest["download_url"]
+zip_name = zip_url.split("/")[-1]
+folder = zip_name[:-4]
+urllib.request.urlretrieve(zip_url, zip_name)
+with zipfile.ZipFile(zip_name) as zf:
+    zf.extractall(".")
+subprocess.check_call(["bash", os.path.join(folder, "install.sh"), ".", "--yes"])
+print("SpecKit installed into the current project.")
+PY
+```
+
+Only `python3` and `bash` are required. The `--yes` flag runs `install.sh` in non-interactive mode (defaults for project name, industry, etc.) — customize later in `.specify/memory/`. This mirrors the manifest-driven installer used by the SF Audit Tool. See [`DIRECT_INSTALL_FROM_GITHUB.md`](DIRECT_INSTALL_FROM_GITHUB.md) for the step-by-step and update flow.
+
+### Alternative: One-Command git Install
 
 **Run this from inside your project folder.** Works in BOTH Cursor's integrated terminal AND macOS Terminal.
 
@@ -363,6 +385,7 @@ You should see the skill activate and prompt for input.
 | `/speckit-plan` | Create implementation plan with research | `plan.md`, `data-model.md` |
 | `/speckit-tasks` | Break spec into implementable tasks | `tasks.md` |
 | `/speckit-wireframe` | Generate SLDS-aligned UI mockups | `wireframes.md` |
+| `/speckit-testcases` | Generate test cases from the specification | `test-cases.md` |
 | `/speckit-analyze` | Validate spec completeness | PASS/FAIL verdict |
 | `/speckit-implement` | Execute task implementation | Code files |
 | `/speckit-dashboard` | Generate/update progress dashboard | Dashboard update |
@@ -371,6 +394,7 @@ You should see the skill activate and prompt for input.
 
 | Command | Purpose |
 |---------|---------|
+| `/speckit-init` | Scaffold SpecKit structure and memory files |
 | `/speckit-checklist` | Generate requirement checklist |
 | `/speckit-clarify` | Refine ambiguous requirements |
 | `/speckit-constitution` | Define project guardrails |

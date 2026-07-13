@@ -13,13 +13,39 @@ A comprehensive specification and progress tracking kit for Salesforce developme
 - **Wireframe Generation** - SLDS-aligned UI mockups for customer sign-off
 - **Constitution Governance** - Enforce architectural principles and coding standards
 
+## How It Works
+
+For a plain-English, leadership-friendly overview of the full pipeline (transcript → spec → wireframe → plan → tasks → test cases → deployed code), open [`docs/SpecKit-How-It-Works.html`](docs/SpecKit-How-It-Works.html) in a browser. Note: this is a local HTML page, not a hosted link.
+
 ## Quick Install
 
 Cursor loads agent skills **per project** (from `<project>/.cursor/skills/`), so you install SpecKit into each project you want to use it in. The one-liner below does that in one step.
 
 **Run it from inside your project folder**, in a normal terminal (Cursor's integrated terminal or macOS Terminal — not inside an AI agent sandbox).
 
-### Install / add to a project
+### Fastest — one-shot install (no git clone, no typing)
+
+Paste this into a terminal opened in your project folder. It reads the published release manifest, downloads the latest release zip from GitHub, extracts it, and installs SpecKit into the **current project** non-interactively (sensible defaults — customize later in `.specify/memory/`):
+
+```bash
+python3 - <<'PY'
+import json, urllib.request, os, zipfile, subprocess
+manifest_url = "https://github.com/pravsingh1987/speckit-salesforce/raw/refs/heads/main/latest-release.json"
+manifest = json.load(urllib.request.urlopen(manifest_url))
+zip_url = manifest["download_url"]
+zip_name = zip_url.split("/")[-1]
+folder = zip_name[:-4]
+urllib.request.urlretrieve(zip_url, zip_name)
+with zipfile.ZipFile(zip_name) as zf:
+    zf.extractall(".")
+subprocess.check_call(["bash", os.path.join(folder, "install.sh"), ".", "--yes"])
+print("SpecKit installed into the current project.")
+PY
+```
+
+Only `python3` and `bash` are required (both preinstalled on macOS/Linux). No `git clone`, no wizard prompts. This mirrors the manifest-driven installer used by the SF Audit Tool.
+
+### Install / add to a project (git clone)
 
 ```bash
 git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null; bash ~/.speckit-salesforce/install.sh .
@@ -70,16 +96,18 @@ See `INSTALLATION_GUIDE.md` for complete setup instructions.
 
 | Command | Description |
 |---------|-------------|
+| `/speckit-init` | Scaffold SpecKit structure and memory files |
 | `/speckit-specify` | Generate specification from objective |
+| `/speckit-clarify` | Refine ambiguous requirements |
 | `/speckit-plan` | Create implementation plan with research |
 | `/speckit-tasks` | Break down into actionable tasks |
 | `/speckit-analyze` | Validate spec completeness |
 | `/speckit-wireframe` | Create SLDS-aligned UI wireframes |
+| `/speckit-testcases` | Generate test cases from the specification |
+| `/speckit-checklist` | Generate requirement checklists |
 | `/speckit-implement` | Execute task implementation |
 | `/speckit-dashboard` | Manage progress dashboard |
 | `/speckit-constitution` | Validate against governance principles |
-| `/speckit-checklist` | Generate requirement checklists |
-| `/speckit-clarify` | Refine ambiguous requirements |
 | `/speckit-taskstoissues` | Export tasks to Jira |
 | `/speckit-agent-context-update` | Update agent context |
 
