@@ -455,12 +455,16 @@ fi
 echo -e "${CYAN}╚════════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
-echo -e "${DIM}Key Files to Customize:${NC}"
-echo -e "  ${DIM}• .specify/memory/constitution.md    - Governance rules${NC}"
-echo -e "  ${DIM}• .specify/memory/project-details.md - Stakeholders & timelines${NC}"
-echo -e "  ${DIM}• .specify/memory/taxonomy.md        - Naming conventions${NC}"
-echo -e "  ${DIM}• .specify/memory/domain.md          - Business processes${NC}"
-echo -e "  ${DIM}• .specify/memory/regulatory.md      - Compliance rules${NC}"
+echo -e "${YELLOW}${BOLD}⚑ FILL THESE IN NEXT — your project grounding (read on every command):${NC}"
+echo -e "  ${BOLD}1.${NC} .specify/memory/constitution.md      ${DIM}Governance: architecture, security, governor limits, testing, perm-set naming${NC}"
+echo -e "  ${BOLD}2.${NC} .specify/memory/project-details.md   ${DIM}Project name, org alias & API version, connected systems, scope, Jira/repo IDs${NC}"
+echo -e "  ${BOLD}3.${NC} .specify/memory/domain.md            ${DIM}Industry, business processes, personas, guiding principles${NC}"
+echo -e "  ${BOLD}4.${NC} .specify/memory/taxonomy.md          ${DIM}Canonical naming & terminology (objects, records, roles) used verbatim${NC}"
+echo -e "  ${BOLD}5.${NC} .specify/memory/regulatory.md        ${DIM}Compliance & data-governance guardrails${NC}"
+echo -e "  ${BOLD}6.${NC} .cursor/rules/wireframe-salesforce-anatomy.mdc  ${DIM}Lightning page anatomy for /speckit-wireframe${NC}"
+echo ""
+echo -e "${DIM}Anything left as a [PLACEHOLDER] will be flagged by SpecKit instead of assumed.${NC}"
+echo -e "${DIM}Guided fill: run /speckit-constitution then /speckit-specify. Full guide: INSTALLATION_GUIDE.md → \"Next Steps\".${NC}"
 echo ""
 
 # Open constitution if requested

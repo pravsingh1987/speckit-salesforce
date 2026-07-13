@@ -101,7 +101,7 @@ print("SpecKit installed into the current project.")
 PY
 ```
 
-Only `python3` and `bash` are required. The `--yes` flag runs `install.sh` in non-interactive mode (defaults for project name, industry, etc.) — customize later in `.specify/memory/`. This mirrors the manifest-driven installer used by the SF Audit Tool. See [`DIRECT_INSTALL_FROM_GITHUB.md`](DIRECT_INSTALL_FROM_GITHUB.md) for the step-by-step and update flow.
+Only `python3` and `bash` are required. The `--yes` flag runs `install.sh` in non-interactive mode (defaults for project name, industry, etc.) — customize later in `.specify/memory/` (see [Next Steps](#next-steps--information-you-must-fill-in)). This mirrors the manifest-driven installer used by the SF Audit Tool. The step-by-step and release-cutting flow is in [Appendix: Manifest Releases](#appendix-manifest-releases-maintainers).
 
 ### Alternative: One-Command git Install
 
@@ -132,6 +132,35 @@ After it finishes:
 ```bash
 ls .cursor/skills   # 14 speckit-* commands
 ls .cursor/rules    # dashboard-enforcement.md, grounding-guardrails.mdc, wireframe-salesforce-anatomy.mdc
+```
+
+### Next Steps — Information You Must Fill In
+
+The installer ships **sample/placeholder** grounding files. Before you run `/speckit-*` commands, fill these in so the AI is grounded in *your* project. Every command reads them on each run (enforced by `.cursor/rules/grounding-guardrails.mdc`), so the quality of your output depends directly on how complete these are.
+
+Fill them in this order:
+
+| # | What to fill | File | What goes in it |
+|---|--------------|------|-----------------|
+| 1 | **Constitution** | `.specify/memory/constitution.md` | Non-negotiable governance: architecture principles, security (USER_MODE, `with sharing`, CRUD/FLS), governor-limit rules, trigger pattern, test-coverage minimum, permission-set naming. Start from `sample-constitution.md`. |
+| 2 | **Project Details** | `.specify/memory/project-details.md` | Project name, Salesforce org alias & API version, connected systems, in-scope / out-of-scope modules, Jira project key & repo URLs, stakeholders and timelines. |
+| 3 | **Domain** | `.specify/memory/domain.md` | Your industry and business processes, key user personas, and the guiding principles the solution must respect. |
+| 4 | **Taxonomy** | `.specify/memory/taxonomy.md` | Canonical naming & terminology — object/record/role names and acronyms — used verbatim across specs, plans and code so nothing is reinvented. |
+| 5 | **Regulatory** | `.specify/memory/regulatory.md` | Compliance and data-governance guardrails relevant to your industry and data classification. |
+| 6 | **Wireframe anatomy** | `.cursor/rules/wireframe-salesforce-anatomy.mdc` | The mandatory Lightning record-page structure every wireframe/screen mock must follow. Review it and adjust to your org's page layout conventions before running `/speckit-wireframe`. |
+
+Two ways to fill them:
+
+- **Guided (recommended):** in Cursor, run the commands — `/speckit-constitution` to draft/validate governance, then `/speckit-specify` which will prompt you for the domain/taxonomy details it still needs.
+- **Manual:** open each file above and replace the `[PLACEHOLDER]` values. Anything left as a placeholder will be flagged by SpecKit instead of silently assumed.
+
+> **Tip:** if you used the non-interactive one-shot install, the project name defaulted to the folder name and industry to "General" — update `project-details.md` and `domain.md` first.
+
+Then create your first feature:
+
+```
+/speckit-specify -EPIC "Your Feature Name"
+Objective: <what you want to achieve>
 ```
 
 > **Pick one track and stick to it.** Both tracks share the same `~/.speckit-salesforce` cache, so you can only be pointed at one remote at a time. To switch tracks, `rm -rf ~/.speckit-salesforce` and re-run the matching install one-liner.
@@ -1373,6 +1402,42 @@ cp /path/to/speckit-salesforce/docs/progress-dashboard.html /path/to/your-projec
 1. **Restart Cursor** to load updated skills
 2. **Review changes** if you updated memory files
 3. **Check backup** at `.speckit-backup-YYYYMMDD-HHMMSS/` if needed
+
+---
+
+## Appendix: Manifest Releases (maintainers)
+
+The one-shot installer depends on two artefacts committed at the repo root:
+
+- `latest-release.json` — the manifest (`latest_version`, `download_url`, `notes_url`).
+- `speckit-salesforce-v<version>.zip` — the release zip, containing a top-level `speckit-salesforce-v<version>/` folder with `install.sh`, `.specify/`, `.cursor/`, `docs/`, etc.
+
+### Step-by-step manual install (if the one-liner is blocked)
+
+```bash
+curl -L -o speckit-salesforce-v1.0.0.zip "https://github.com/pravsingh1987/speckit-salesforce/raw/refs/heads/main/speckit-salesforce-v1.0.0.zip"
+unzip -q speckit-salesforce-v1.0.0.zip
+bash speckit-salesforce-v1.0.0/install.sh . --yes   # drop --yes for the interactive wizard
+```
+
+### Cutting a new release
+
+1. Bump `version` in `pyproject.toml` and `latest_version` + `download_url` in `latest-release.json`.
+2. Build the zip:
+
+   ```bash
+   python3 build-release.py
+   ```
+
+3. Commit the regenerated zip and manifest, then push:
+
+   ```bash
+   git add latest-release.json speckit-salesforce-v*.zip build-release.py install.sh
+   git commit -m "release: speckit-salesforce vX.Y.Z"
+   git push origin main
+   ```
+
+`build-release.py` reads the version from `pyproject.toml` and packages the correct file set automatically (skills, rules, `.specify/`, `docs/`, and the top-level scripts).
 
 ---
 
