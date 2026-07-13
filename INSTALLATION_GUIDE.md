@@ -43,6 +43,29 @@ SpecKit Salesforce Edition is a universal development accelerator for any Salesf
 | **GitHub Account** | Repository hosting | [github.com](https://github.com) |
 | **Jira Access** | (Optional) Story tracking | Your organization's Jira |
 | **Salesforce CLI** | (Optional) Deployment | `npm install -g @salesforce/cli` |
+| **Node.js 18+** | (Optional) Required by the Salesforce CLI and the MuleSoft Anypoint CLI | `brew install node` or [nodejs.org](https://nodejs.org) |
+| **MuleSoft Anypoint CLI v4** | (Optional) **Required for MuleSoft / Anypoint work** — authoring, packaging and publishing API specs (RAML/OAS) to Anypoint Exchange | `npm install -g anypoint-cli-v4` |
+
+> **MuleSoft integrations need the Anypoint CLI.** If your project includes MuleSoft/Anypoint
+> API specifications (e.g., publishing a RAML/OAS design to Anypoint Exchange), the
+> **Anypoint CLI v4** is a hard prerequisite — the workflow will not work without it.
+>
+> ```bash
+> # Node.js must be on PATH first (brew install node), then:
+> PUPPETEER_SKIP_DOWNLOAD=true npm install -g anypoint-cli-v4
+> anypoint-cli-v4 --version        # verify
+> ```
+>
+> Anypoint CLI v4 authenticates via a **Connected App** (client ID + secret), which is required
+> for orgs with SSO/MFA:
+>
+> ```bash
+> anypoint-cli-v4 conf client_id     <YOUR_CONNECTED_APP_CLIENT_ID>
+> anypoint-cli-v4 conf client_secret <YOUR_CONNECTED_APP_CLIENT_SECRET>
+> ```
+>
+> `PUPPETEER_SKIP_DOWNLOAD=true` avoids a common install failure where the CLI tries to
+> download a headless Chrome build.
 
 ---
 
@@ -70,12 +93,18 @@ External / GitHub:
 git clone https://github.com/pravsingh1987/speckit-salesforce.git ~/.speckit-salesforce 2>/dev/null || git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/install.sh .
 ```
 
-This copies the skills, `.specify/`, and `docs/` into your current project, then runs the configuration wizard.
+This copies the skills, always-on Cursor rules (`.cursor/rules/` — grounding guardrails, wireframe anatomy, dashboard enforcement), `.specify/`, and `docs/` into your current project, then runs the configuration wizard.
 
 After it finishes:
 
 1. **Reload Cursor** (Cmd+Shift+P → "Reload Window") so it picks up the new skills
 2. All `/speckit-*` commands now work in this project
+3. Verify what landed:
+
+```bash
+ls .cursor/skills   # 14 speckit-* commands
+ls .cursor/rules    # dashboard-enforcement.md, grounding-guardrails.mdc, wireframe-salesforce-anatomy.mdc
+```
 
 #### Adding SpecKit to Another Project
 
@@ -95,13 +124,23 @@ A common misconception is that you must use macOS Terminal. **That's not true fo
 
 So this works identically whether you run it in Cursor or macOS Terminal. Pick whichever is open.
 
-#### To Update the Cached Package
+#### To Update an Installed Project to the Latest
+
+Pull the cached package, then run the updater (preserves your `progress-tracker.json` and constitution customizations):
+
+Salesforce Internal:
 
 ```bash
-git -C ~/.speckit-salesforce pull
+git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
 ```
 
-Then re-run `bash ~/.speckit-salesforce/install.sh .` in a project, or use that project's `./update.sh`.
+External / GitHub:
+
+```bash
+git -C ~/.speckit-salesforce pull -q; bash ~/.speckit-salesforce/update.sh .
+```
+
+(The command is identical for both — the difference is only which remote `~/.speckit-salesforce` was originally cloned from. To switch remotes, `rm -rf ~/.speckit-salesforce` and re-run the matching install one-liner.)
 
 ---
 
@@ -234,7 +273,7 @@ Proceed? (Y/n): Y
 
 📦 Installing components...
   ✓ SpecKit core
-  ✓ Agent skills (12 commands)
+  ✓ Agent skills (14 commands)
   ✓ Progress dashboard
   ✓ Specs directory
 
