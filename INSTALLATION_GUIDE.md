@@ -79,6 +79,10 @@ The one-command install below caches the package once, then copies skills into y
 
 ### Fastest: One-Shot Manifest Install (no git clone, no typing)
 
+> **Where to run this:** use a **real terminal**, not an AI agent's chat sandbox. In **Cursor**, open one via **File → New Terminal**; in **Claude / Claude Code**, use its built-in terminal; or use the macOS **Terminal** app. Open it inside the project folder you want SpecKit added to.
+>
+> ![Open a new terminal in Cursor: File → New Terminal](docs/assets/cursor-new-terminal.png)
+
 Paste this from inside your project folder. It reads the published release manifest, downloads the latest release zip from GitHub, extracts it, and installs SpecKit into the **current project** non-interactively:
 
 ```bash

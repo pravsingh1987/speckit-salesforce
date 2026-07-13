@@ -24,6 +24,18 @@ python3 --version
 bash --version
 ```
 
+## Where to run these commands
+
+Run the commands in a **real terminal**, not inside an AI agent's chat sandbox:
+
+- **Cursor** — open one via the menu: **File → New Terminal** (shortcut shown next to the menu item).
+- **Claude / Claude Code** — use its built-in terminal.
+- Or the plain **macOS Terminal** app.
+
+![Open a new terminal in Cursor: File → New Terminal](docs/assets/cursor-new-terminal.png)
+
+Open the terminal **inside the project folder** you want SpecKit added to (or `cd` into it first).
+
 ## One-Shot Install
 
 Run this **from inside the project folder** you want SpecKit added to. It reads `latest-release.json`, downloads the latest published zip, extracts it, and installs SpecKit into the current project non-interactively:

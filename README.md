@@ -21,7 +21,13 @@ For a plain-English, leadership-friendly overview of the full pipeline (transcri
 
 Cursor loads agent skills **per project** (from `<project>/.cursor/skills/`), so you install SpecKit into each project you want to use it in. The one-liner below does that in one step.
 
-**Run it from inside your project folder**, in a normal terminal (Cursor's integrated terminal or macOS Terminal — not inside an AI agent sandbox).
+**Run it from inside your project folder**, in a **real terminal** — not inside an AI agent's chat sandbox. Good options:
+
+- **Cursor:** menu **File → New Terminal**
+- **Claude / Claude Code:** its built-in terminal
+- Or the plain **macOS Terminal** app
+
+![Open a new terminal in Cursor: File → New Terminal](docs/assets/cursor-new-terminal.png)
 
 ### Fastest — one-shot install (no git clone, no typing)
 
